@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">Lyfter</string>
+
+    <string name="app_name">Lifter</string>
+
+    <string name="register"><u>Not Registered? Register Now!</u></string>
+
+    <string name="login"><u>Already registered? Login now!</u></string>
+
+
 </resources>
