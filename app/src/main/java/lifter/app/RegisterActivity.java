@@ -56,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
 
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
+
         login = (TextView) findViewById(R.id.login);
         title = (TextView) findViewById(R.id.title);
 
