@@ -1,4 +1,4 @@
-package com.example.gilbert.lyfter115_profile;
+package lifter.app;
 
 import android.content.Intent;
 import android.os.Bundle;

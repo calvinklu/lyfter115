@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <resources>
 
     <string name="app_name">Lifter</string>
@@ -7,4 +8,18 @@
     <string name="login"><u>Already registered? Login now!</u></string>
 
 
+    <string-array name = "fitnesslevel_array">
+        <item></item>
+        <item>Couch Potato</item>
+        <item>Average Joe</item>
+        <item>I AM THE ROCK</item>
+    </string-array>
+
+    <string-array name="experience_array">
+        <item></item>
+        <item>NO EXP. SEND HELP</item>
+        <item>Beginner</item>
+        <item>Intermediate</item>
+        <item>Arnold Schwarzenegger</item>
+    </string-array>
 </resources>

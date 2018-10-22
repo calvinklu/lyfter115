@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                             System.out.println(user.getUid());
                             System.out.println(user.getDisplayName());
 
-                            startActivity(new Intent(MainActivity.this, SecondActivity.class));
+                            startActivity(new Intent(MainActivity.this, ProfilePageActivity.class));
 
                         } else {
 
