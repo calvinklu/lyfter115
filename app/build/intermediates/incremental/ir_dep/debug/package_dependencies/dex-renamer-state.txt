@@ -1,0 +1,7 @@
+#Sun Oct 21 20:09:49 PDT 2018
+base.0=C\:\\Users\\Calvin\\Desktop\\lyfter115\\lyfter115\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\10
+path.1=classes2.dex
+renamed.1=classes2.dex
+path.0=classes.dex
+renamed.0=classes.dex
+base.1=C\:\\Users\\Calvin\\Desktop\\lyfter115\\lyfter115\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\10
