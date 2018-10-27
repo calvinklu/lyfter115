@@ -24,4 +24,5 @@
     <!-- string resources for first Schedule edit page -->
     <string name="Create">Create</string>
     <string name="ScheduleDesc">No schedule yet, tap on "Create" to make one!</string>
+    <string name="couchPotato">"@drawable/couchpotato"</string>
 </resources>

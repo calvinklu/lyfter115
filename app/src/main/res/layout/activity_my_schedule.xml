@@ -10,29 +10,47 @@
     <Button
         android:id="@+id/CreateButton"
         android:layout_width="191dp"
-        android:layout_height="0dp"
+        android:layout_height="68dp"
         android:layout_marginBottom="104dp"
         android:background="@color/colorPrimary"
         android:text="@string/Create"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ScheduleDesc" />
+        app:layout_constraintTop_toBottomOf="@+id/couchPotato"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/ScheduleDesc"
         android:layout_width="202dp"
-        android:layout_height="0dp"
+        android:layout_height="62dp"
         android:layout_marginTop="28dp"
-        android:layout_marginBottom="260dp"
+        android:layout_marginBottom="17dp"
         android:text="@string/ScheduleDesc"
         android:textColor="@color/cast_expanded_controller_background_color"
         android:textSize="14sp"
         app:fontFamily="monospace"
-        app:layout_constraintBottom_toTopOf="@+id/CreateButton"
+        app:layout_constraintBottom_toTopOf="@+id/couchPotato"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside"
         tools:text='No schedule yet, tap on "Create" to make one!' />
+
+    <ImageView
+        android:id="@+id/couchPotato"
+        android:layout_width="239dp"
+        android:layout_height="210dp"
+        android:layout_marginBottom="206dp"
+        android:background="@color/common_google_signin_btn_text_dark_default"
+        android:contentDescription="@string/couchPotato"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ScheduleDesc"
+        app:srcCompat="@drawable/couchpotato"
+        tools:srcCompat="@drawable/couchpotato" />
 
 </android.support.constraint.ConstraintLayout>
