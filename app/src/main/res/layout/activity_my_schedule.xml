@@ -1,9 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyScheduleActivity">
+
+    <Button
+        android:id="@+id/CreateButton"
+        android:layout_width="191dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="104dp"
+        android:background="@color/colorPrimary"
+        android:text="@string/Create"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ScheduleDesc" />
+
+    <TextView
+        android:id="@+id/ScheduleDesc"
+        android:layout_width="202dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="260dp"
+        android:text="@string/ScheduleDesc"
+        android:textColor="@color/cast_expanded_controller_background_color"
+        android:textSize="14sp"
+        app:fontFamily="monospace"
+        app:layout_constraintBottom_toTopOf="@+id/CreateButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text='No schedule yet, tap on "Create" to make one!' />
 
 </android.support.constraint.ConstraintLayout>
