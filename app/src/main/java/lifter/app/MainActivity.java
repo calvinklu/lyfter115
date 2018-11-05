@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                             Snackbar.make(title, "Login Successful", Snackbar.LENGTH_LONG).show();
                             Log.d(TAG, "Success!");
 
-                            startActivity(new Intent(MainActivity.this, AddTimeActivity.class));
+                            startActivity(new Intent(MainActivity.this, Sidebar.class));
 
                         } else {
 

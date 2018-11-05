@@ -2,11 +2,13 @@ package lifter.app;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,14 +53,24 @@ public class MySchedule extends AppCompatActivity {
         my_query.addListenerForSingleValueEvent(my_listener);
         ListViewSchedule = (ListView) findViewById(R.id.ListViewSchedule);
         myScheduleList = new ArrayList<>();
+
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), AddTimeActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     protected void onResume() {
         super.onResume();
 
     }
-
-    // This method will just show the menu item (which is our button "ADD")
+//
+//    // This method will just show the menu item (which is our button "ADD")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
@@ -68,7 +80,8 @@ public class MySchedule extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
+//
+//
     ValueEventListener my_listener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -80,6 +93,7 @@ public class MySchedule extends AppCompatActivity {
             }
             MyScheduleList myAdapter = new MyScheduleList(MySchedule.this, myScheduleList);
             ListViewSchedule.setAdapter(myAdapter);
+
         }
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {

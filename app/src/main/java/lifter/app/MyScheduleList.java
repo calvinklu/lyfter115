@@ -1,6 +1,7 @@
 package lifter.app;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,5 +72,5 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
             ref.child(schedule.getId()).removeValue();
             myScheduleList.remove(schedule);
         }
-
 }
+

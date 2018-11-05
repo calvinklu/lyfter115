@@ -19,9 +19,11 @@
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".ProfilePageActivity"></activity>
         <activity android:name=".AboutMeActivity"></activity>
+
         <activity
             android:name=".MySchedule"
             android:label="@string/my_schedule"></activity>
+
         <activity android:name=".AddTimeActivity"></activity>
         <activity android:name=".MyWorkoutsActivity"></activity>
         <activity

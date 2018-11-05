@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#B7F9F7">
 
     <TextView
         android:id="@+id/day"
