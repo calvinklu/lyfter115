@@ -7,6 +7,28 @@
 
     <string name="login"><u>Already registered? Login now!</u></string>
 
+    <string name="back">Back</string>
+
+    <string name="menu">MENU</string>
+
+    <string name="my_schedule">My Schedule</string>
+
+    <string name="no_schedule">NO SCHEDULES AVAILABLE</string>
+
+    <string name="title_activity_menu">MenuActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="title_activity_sidebar">Schedule</string>
+
+
+
 
     <string-array name = "fitnesslevel_array">
         <item></item>

@@ -16,7 +16,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.view.View.OnClickListener;
-import android.content.SharedPreferences;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -118,11 +117,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                             Snackbar.make(title, "Login Successful", Snackbar.LENGTH_LONG).show();
                             Log.d(TAG, "Success!");
 
-                            System.out.println(user);
-                            System.out.println(user.getUid());
-                            System.out.println(user.getDisplayName());
-
-                            startActivity(new Intent(MainActivity.this, ProfilePageActivity.class));
+                            startActivity(new Intent(MainActivity.this, AddTimeActivity.class));
 
                         } else {
 

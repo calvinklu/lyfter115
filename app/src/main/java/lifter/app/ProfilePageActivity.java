@@ -36,7 +36,7 @@ public class ProfilePageActivity extends AppCompatActivity {
         MyScheduleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent startIntent3 = new Intent(getApplicationContext(), MyScheduleActivity.class);
+                Intent startIntent3 = new Intent(getApplicationContext(), MySchedule.class);
                 startActivity(startIntent3); //allows to go to My Schedule page
             }
         });

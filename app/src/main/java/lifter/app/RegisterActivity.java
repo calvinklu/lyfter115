@@ -109,13 +109,8 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
 
                             FirebaseUser user = mAuth.getCurrentUser();
 
-
                             Snackbar.make(title, "Login Successful", Snackbar.LENGTH_LONG).show();
                             Log.d(TAG, "Success!");
-
-                            System.out.println(user);
-                            System.out.println(user.getUid());
-                            System.out.println(user.getDisplayName());
 
                             startActivity(new Intent(RegisterActivity.this, MainActivity.class));
 
