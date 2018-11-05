@@ -32,15 +32,16 @@
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/delete_btn"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:background="@android:color/holo_red_dark"
-        android:text="Delete"
         android:textColor="@android:color/white"
+        android:text="Delete"
+        android:textAllCaps="false"
+        android:background="@color/colorPrimary"
         android:textStyle="bold" />
 
 </LinearLayout>
