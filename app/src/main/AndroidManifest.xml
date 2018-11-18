@@ -9,21 +9,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/login_page">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity"></activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/register_page"></activity>
 
         <activity
             android:name=".MySchedule"
-            android:label="@string/my_schedule"></activity>
+            android:label="@string/edit_schedule"></activity>
 
-        <activity android:name=".AddTimeActivity"></activity>
-        <activity android:name=".AddWorkoutActivity"></activity>
+        <activity
+            android:name=".AddTimeActivity"
+            android:label="@string/add_schedule"></activity>
+
+        <activity
+            android:name=".AddWorkoutActivity"
+            android:label="@string/add_workout"></activity>
+
         <activity
             android:name=".Sidebar"
             android:label="@string/title_activity_sidebar"

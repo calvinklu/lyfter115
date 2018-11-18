@@ -7,15 +7,21 @@
 
     <string name="login"><u>Already registered? Login now!</u></string>
 
+    <string name="register_page"><u>Register</u></string>
+
+    <string name="login_page"><u>Login</u></string>
+
     <string name="back">Back</string>
 
     <string name="menu">MENU</string>
 
-    <string name="my_workout">My Workout</string>
+    <string name="add_workout">Add Workout</string>
+
+    <string name="add_schedule">Add Workout Time</string>
 
     <string name="no_workout">NO WORKOUTS AVAILABLE</string>
 
-    <string name="my_schedule">My Schedule</string>
+    <string name="edit_schedule">Edit Schedule</string>
 
     <string name="no_schedule">NO SCHEDULES AVAILABLE</string>
 
