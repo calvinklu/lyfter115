@@ -43,8 +43,8 @@ public class AddWorkoutActivity extends AppCompatActivity {
         progress = (ProgressBar) findViewById(R.id.progress);
 
 
-        FirebaseDatabase databaseWorkout = FirebaseDatabase.getInstance();
-        final DatabaseReference ref = databaseWorkout.getReference("workout");
+        FirebaseDatabase databaseSchedule = FirebaseDatabase.getInstance();
+        final DatabaseReference ref = databaseSchedule.getReference("schedule");
 
         auth = FirebaseAuth.getInstance();
         u = auth.getCurrentUser();
@@ -52,7 +52,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
 
         exit.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent(AddWorkoutActivity.this, MyWorkout.class);
+                Intent i = new Intent(AddWorkoutActivity.this, Sidebar.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             }
@@ -71,18 +71,24 @@ public class AddWorkoutActivity extends AppCompatActivity {
     private void addWorkout(DatabaseReference ref) {
 
         String etMuscle = muscle.getSelectedItem().toString();
-        String email_content = u.getEmail();
 
         if (!TextUtils.isEmpty(etMuscle)) {
 
-            String id = ref.push().getKey();
+            Intent i = getIntent();
+            Bundle extras = i.getExtras();
+
+            String id = extras.getString("id");
+            String email_content = extras.getString("email_content");
+            String day = extras.getString("day");
+            String fromTime = extras.getString("fromTime");
+            String toTime = extras.getString("toTime");
 
             // Reflects in Schedule java file (the scheduling object)
-            Workout workout = new Workout(id, email_content, etMuscle);
-            ref.child(id).setValue(workout);
+            Schedule schedule = new Schedule(id, email_content, day, fromTime, toTime, etMuscle);
+            ref.child(id).setValue(schedule);
 
-            Intent i = new Intent(AddWorkoutActivity.this, MyWorkout.class);
-            startActivity(i);
+            Intent j = new Intent(AddWorkoutActivity.this, Sidebar.class);
+            startActivity(j);
 
         } else
             Toast.makeText(this, "You have not selected a muscle", Toast.LENGTH_LONG).show();

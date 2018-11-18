@@ -21,6 +21,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -91,6 +92,7 @@ public class MySchedule extends AppCompatActivity {
                 Schedule schedule = scheduleSnapshot.getValue(Schedule.class);
                 myScheduleList.add(schedule);
             }
+            Collections.reverse(myScheduleList);
             MyScheduleList myAdapter = new MyScheduleList(MySchedule.this, myScheduleList);
             ListViewSchedule.setAdapter(myAdapter);
 

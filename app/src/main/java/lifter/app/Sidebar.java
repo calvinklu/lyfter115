@@ -31,6 +31,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import lifter.app.MainActivity;
@@ -84,6 +85,15 @@ public class Sidebar extends AppCompatActivity
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser u = auth.getCurrentUser();
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), AddTimeActivity.class);
+                startActivity(i);
+            }
+        });
+
         if (u == null) {
             System.out.println("NO LOGIN");
             return;
@@ -91,9 +101,6 @@ public class Sidebar extends AppCompatActivity
         TextView email = header.findViewById(R.id.side_user_email);
         email.setText(u.getEmail());
     }
-
-
-
 
 
 
@@ -105,6 +112,7 @@ public class Sidebar extends AppCompatActivity
                 Schedule schedule = eventSnapshot.getValue(Schedule.class);
                 scheduleList.add(schedule);
             }
+
             ScheduleList adapter = new ScheduleList(Sidebar.this, scheduleList);
             listViewSchedule.setAdapter(adapter);
         }
@@ -133,11 +141,6 @@ public class Sidebar extends AppCompatActivity
 
         if (id == R.id.my_schedule) {
             Intent i = new Intent(this, MySchedule.class);
-            startActivity(i);
-        }
-
-        if (id == R.id.my_workout) {
-            Intent i = new Intent(this, MyWorkout.class);
             startActivity(i);
         }
 

@@ -71,6 +71,8 @@ public class AddTimeActivity extends AppCompatActivity {
 
     private void addSchedule(DatabaseReference ref){
 
+        Bundle extras = new Bundle();
+
         String fromTime = fromBtn.getText().toString();
         String toTime = toBtn.getText().toString();
         String etDay = day.getSelectedItem().toString();
@@ -87,10 +89,19 @@ public class AddTimeActivity extends AppCompatActivity {
                     String id = ref.push().getKey();
 
                     // Reflects in Schedule java file (the scheduling object)
-                    Schedule schedule = new Schedule(id, email_content, etDay, fromTime, toTime);
-                    ref.child(id).setValue(schedule);
 
-                    Intent i = new Intent(AddTimeActivity.this, MySchedule.class);
+//                    Schedule schedule = new Schedule(id, email_content, etDay, fromTime, toTime);
+//                    ref.child(id).setValue(schedule);
+
+                    Intent i = new Intent(AddTimeActivity.this, AddWorkoutActivity.class);
+
+                    extras.putString("id", id);
+                    extras.putString("email_content", email_content);
+                    extras.putString("day", etDay);
+                    extras.putString("fromTime", fromTime);
+                    extras.putString("toTime", toTime);
+
+                    i.putExtras(extras);
                     startActivity(i);
                 }
                 else

@@ -43,13 +43,18 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
             final TextView day = myListViewItem.findViewById(R.id.day);
             final TextView from = myListViewItem.findViewById(R.id.from);
             final TextView to = myListViewItem.findViewById(R.id.to);
+            final TextView muscle = myListViewItem.findViewById(R.id.muscle);
+
 
             final Button delete_btn = myListViewItem.findViewById(R.id.delete_btn);
 
             final Schedule mySchedule = myScheduleList.get(position);
+
+
             day.setText(mySchedule.getDay());
             from.setText(mySchedule.getFrom());
             to.setText(mySchedule.getTo());
+            muscle.setText(mySchedule.getMuscle());
 
             delete_btn.setOnClickListener(new Button.OnClickListener() {
                 @Override
@@ -58,7 +63,8 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
                             mySchedule.getEmail(),
                             day.getText().toString(),
                             from.getText().toString(),
-                            to.getText().toString());
+                            to.getText().toString(),
+                            muscle.getText().toString());
 
                     schedule = s;
                     deleteSchedule(schedule);

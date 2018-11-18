@@ -22,10 +22,6 @@
             android:name=".MySchedule"
             android:label="@string/my_schedule"></activity>
 
-        <activity
-            android:name=".MyWorkout"
-            android:label="@string/my_workout"></activity>
-
         <activity android:name=".AddTimeActivity"></activity>
         <activity android:name=".AddWorkoutActivity"></activity>
         <activity

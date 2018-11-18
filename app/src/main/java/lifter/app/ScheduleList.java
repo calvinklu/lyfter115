@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -17,6 +18,7 @@ public class ScheduleList extends ArrayAdapter<Schedule> {
 
     public ScheduleList(Activity context, List<Schedule> scheduleList){
         super(context, R.layout.list_layout, scheduleList);
+        Collections.reverse(scheduleList);
         this.context = context;
         this.scheduleList = scheduleList;
     }
@@ -31,11 +33,13 @@ public class ScheduleList extends ArrayAdapter<Schedule> {
         TextView day = listViewItem.findViewById(R.id.day);
         TextView from = listViewItem.findViewById(R.id.from);
         TextView to = listViewItem.findViewById(R.id.to);
+        TextView muscle = listViewItem.findViewById(R.id.muscle);
 
         Schedule schedule = scheduleList.get(position);
         day.setText(schedule.getDay());
         from.setText(schedule.getFrom());
         to.setText(schedule.getTo());
+        muscle.setText(schedule.getMuscle());
 
         return listViewItem;
     }

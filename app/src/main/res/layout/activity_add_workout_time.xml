@@ -196,7 +196,7 @@
             android:layout_marginRight="24dp"
             android:background="@color/colorPrimary"
             android:onClick="onClick"
-            android:text="Add"
+            android:text="Next"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="20sp"

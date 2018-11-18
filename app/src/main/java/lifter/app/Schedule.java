@@ -6,17 +6,19 @@ public class Schedule {
     String day;
     String from;
     String to;
+    String muscle;
 
     public Schedule() {
 
     }
 
-    public Schedule(String id, String email, String day, String from, String to) {
+    public Schedule(String id, String email, String day, String from, String to, String muscle) {
         this.id = id;
         this.email = email;
         this.day = day;
         this.from = from;
         this.to = to;
+        this.muscle = muscle;
     }
 
     public String getId() { return id; }
@@ -31,6 +33,10 @@ public class Schedule {
 
     public String getTo() {
         return to;
+    }
+
+    public String getMuscle() {
+        return muscle;
     }
 }
 
