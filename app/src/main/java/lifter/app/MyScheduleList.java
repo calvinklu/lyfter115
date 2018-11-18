@@ -64,7 +64,6 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
                     deleteSchedule(schedule);
                 }
             });
-
             return myListViewItem;
         }
 

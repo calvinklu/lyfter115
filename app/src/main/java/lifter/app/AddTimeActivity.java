@@ -45,7 +45,6 @@ public class AddTimeActivity extends AppCompatActivity {
 
 
         FirebaseDatabase databaseSchedule = FirebaseDatabase.getInstance();
-
         final DatabaseReference ref = databaseSchedule.getReference("schedule");
 
         auth = FirebaseAuth.getInstance();

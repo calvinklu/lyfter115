@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -90,6 +92,11 @@ public class Sidebar extends AppCompatActivity
         email.setText(u.getEmail());
     }
 
+
+
+
+
+
     ValueEventListener listener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -126,6 +133,11 @@ public class Sidebar extends AppCompatActivity
 
         if (id == R.id.my_schedule) {
             Intent i = new Intent(this, MySchedule.class);
+            startActivity(i);
+        }
+
+        if (id == R.id.my_workout) {
+            Intent i = new Intent(this, MyWorkout.class);
             startActivity(i);
         }
 

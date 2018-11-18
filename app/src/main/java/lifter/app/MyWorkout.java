@@ -24,42 +24,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MySchedule extends AppCompatActivity {
+public class MyWorkout extends AppCompatActivity {
 
-    private Schedule schedule;
+    private Workout workout;
 
     FirebaseAuth auth;
     FirebaseUser u;
     DatabaseReference ref;
 
-    ListView ListViewSchedule;
-    List<Schedule> myScheduleList;
+    ListView ListViewWorkout;
+    List<Workout> myWorkoutList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule);
+        setContentView(R.layout.activity_workout);
 
 
-        ref = FirebaseDatabase.getInstance().getReference("schedule");
+        ref = FirebaseDatabase.getInstance().getReference("workout");
 
         auth = FirebaseAuth.getInstance();
         u = auth.getCurrentUser();
 
-        Query my_query = FirebaseDatabase.getInstance().getReference("schedule")
+        Query my_query = FirebaseDatabase.getInstance().getReference("workout")
                 .orderByChild("email")
                 .equalTo(u.getEmail());
 
         my_query.addListenerForSingleValueEvent(my_listener);
-        ListViewSchedule = (ListView) findViewById(R.id.ListViewSchedule);
-        myScheduleList = new ArrayList<>();
+        ListViewWorkout = (ListView) findViewById(R.id.ListViewWorkout);
+        myWorkoutList = new ArrayList<>();
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), AddTimeActivity.class);
+                Intent i = new Intent(view.getContext(), AddWorkoutActivity.class);
                 startActivity(i);
             }
         });
@@ -69,7 +69,7 @@ public class MySchedule extends AppCompatActivity {
         super.onResume();
 
     }
-//
+    //
     // This method will just show the menu item (which is our button "ADD")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -80,19 +80,19 @@ public class MySchedule extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-//
+    //
 //
     ValueEventListener my_listener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            myScheduleList.clear();
-            for (DataSnapshot scheduleSnapshot : dataSnapshot.getChildren()) {
+            myWorkoutList.clear();
+            for (DataSnapshot workoutSnapshot : dataSnapshot.getChildren()) {
                 // do something with the schedules
-                Schedule schedule = scheduleSnapshot.getValue(Schedule.class);
-                myScheduleList.add(schedule);
+                Workout workout = workoutSnapshot.getValue(Workout.class);
+                myWorkoutList.add(workout);
             }
-            MyScheduleList myAdapter = new MyScheduleList(MySchedule.this, myScheduleList);
-            ListViewSchedule.setAdapter(myAdapter);
+            MyWorkoutList myAdapter = new MyWorkoutList(MyWorkout.this, myWorkoutList);
+            ListViewWorkout.setAdapter(myAdapter);
 
         }
         @Override

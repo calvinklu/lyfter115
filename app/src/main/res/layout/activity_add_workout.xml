@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".AddWorkoutActivity"
     android:background="#B7F9F7">
 
 
@@ -18,7 +18,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:gravity="center"
-        android:text="Add a Weekly Workout Time"
+        android:text="Add a Weekly Muscle"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -39,16 +39,30 @@
         tools:context=".AddTimeActivity">
 
         <ImageView
-            android:id="@+id/clock"
+            android:id="@+id/body"
             android:layout_width="0dp"
-            android:layout_height="120dp"
+            android:layout_height="250dp"
             android:layout_marginTop="80dp"
             android:text="DEFAULT SNACKBAR"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/clock" />
+            app:srcCompat="@drawable/front" />
+
+        <ImageView
+            android:id="@+id/legend"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:text="DEFAULT SNACKBAR"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/body"
+            app:srcCompat="@drawable/legend" />
 
         <TextView
             android:id="@+id/day_title"
@@ -56,13 +70,13 @@
             android:layout_height="40dp"
             android:layout_marginTop="28dp"
             android:gravity="center"
-            android:text="Select Day:"
+            android:text="Select Muscle:"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/clock" />
+            app:layout_constraintTop_toBottomOf="@+id/legend" />
 
         <RelativeLayout
             android:id="@+id/day_container"
@@ -76,116 +90,19 @@
             app:layout_constraintTop_toBottomOf="@+id/day_title">
 
             <Spinner
-                android:id="@+id/day"
+                android:id="@+id/muscle"
                 style="mySpinnerItemSelectedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="0dp"
-                android:entries="@array/spinnerItems"
+                android:entries="@array/spinnerMuscles"
                 android:paddingLeft="20dp"
                 android:popupBackground="#bfbfbf"
                 android:textAlignment="center" />
 
         </RelativeLayout>
 
-
-        <TextView
-            android:id="@+id/time_title"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="18dp"
-            android:gravity="center"
-            android:text="Select Time:"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/day_container" />
-
-
-        <FrameLayout
-            android:id="@+id/from_container"
-            android:layout_width="180dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/rounded_edit_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/time_title">
-
-            <Button
-                android:id="@+id/from"
-                style="?android:attr/spinnerStyle"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:onClick="setFromBtn"
-                android:paddingLeft="20dp"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/from_container" />
-        </FrameLayout>
-
-
-        <TextView
-            android:id="@+id/from_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:text="From"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/time_title" />
-
-
-        <FrameLayout
-            android:id="@+id/to_container"
-            android:layout_width="180dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="18dp"
-            android:background="@drawable/rounded_edit_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/from_container">
-
-            <Button
-                android:id="@+id/to"
-                style="?android:attr/spinnerStyle"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:onClick="setToBtn"
-                android:paddingLeft="20dp"
-                android:textSize="18sp"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/to_container" />
-        </FrameLayout>
-
-
-        <TextView
-            android:id="@+id/to_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="27dp"
-            android:layout_marginLeft="27dp"
-            android:layout_marginTop="24dp"
-            android:text="To"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/from_title" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/add"
@@ -202,7 +119,7 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/exit"
-            app:layout_constraintTop_toBottomOf="@+id/to_container" />
+            app:layout_constraintTop_toBottomOf="@+id/day_container" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/exit"
@@ -219,7 +136,7 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="@+id/add"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/to_container" />
+            app:layout_constraintTop_toBottomOf="@+id/day_container" />
 
         <ProgressBar
             android:id="@+id/progress"

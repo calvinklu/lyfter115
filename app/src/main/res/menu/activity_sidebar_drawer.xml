@@ -8,6 +8,11 @@
             android:id="@+id/my_schedule"
             android:icon="@drawable/ic_menu_gallery"
             android:title="My Schedule" />
+
+        <item
+            android:id="@+id/my_workout"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="My Workout" />
     </group>
 
 </menu>

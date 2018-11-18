@@ -11,6 +11,10 @@
 
     <string name="menu">MENU</string>
 
+    <string name="my_workout">My Workout</string>
+
+    <string name="no_workout">NO WORKOUTS AVAILABLE</string>
+
     <string name="my_schedule">My Schedule</string>
 
     <string name="no_schedule">NO SCHEDULES AVAILABLE</string>
@@ -25,23 +29,7 @@
 
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="title_activity_sidebar">Schedule</string>
+    <string name="title_activity_sidebar">Lifter</string>
 
 
-
-
-    <string-array name = "fitnesslevel_array">
-        <item></item>
-        <item>Couch Potato</item>
-        <item>Average Joe</item>
-        <item>I AM THE ROCK</item>
-    </string-array>
-
-    <string-array name="experience_array">
-        <item></item>
-        <item>NO EXP. SEND HELP</item>
-        <item>Beginner</item>
-        <item>Intermediate</item>
-        <item>Arnold Schwarzenegger</item>
-    </string-array>
 </resources>

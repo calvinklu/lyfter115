@@ -17,15 +17,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity"></activity>
-        <activity android:name=".ProfilePageActivity"></activity>
-        <activity android:name=".AboutMeActivity"></activity>
 
         <activity
             android:name=".MySchedule"
             android:label="@string/my_schedule"></activity>
 
+        <activity
+            android:name=".MyWorkout"
+            android:label="@string/my_workout"></activity>
+
         <activity android:name=".AddTimeActivity"></activity>
-        <activity android:name=".MyWorkoutsActivity"></activity>
+        <activity android:name=".AddWorkoutActivity"></activity>
         <activity
             android:name=".Sidebar"
             android:label="@string/title_activity_sidebar"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string-array name="spinnerItems">
         <item>Monday</item>
         <item>Tuesday</item>
@@ -9,4 +10,13 @@
         <item>Saturday</item>
         <item>Sunday</item>
     </string-array>
+
+
+    <string-array name="spinnerMuscles">
+        <item>Lower Body</item>
+        <item>Upper Body</item>
+        <item>Core</item>
+        <item>Cardio</item>
+    </string-array>
+
 </resources>
