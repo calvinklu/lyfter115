@@ -54,7 +54,7 @@ public class AddTimeActivity extends AppCompatActivity {
 
         exit.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent(AddTimeActivity.this, MySchedule.class);
+                Intent i = new Intent(AddTimeActivity.this, Sidebar.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             }
