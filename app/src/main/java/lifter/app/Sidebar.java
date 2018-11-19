@@ -144,6 +144,13 @@ public class Sidebar extends AppCompatActivity
             startActivity(i);
         }
 
+        else if (id == R.id.logout) {
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            auth.signOut();
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+        }
+
         return true;
     }
 }

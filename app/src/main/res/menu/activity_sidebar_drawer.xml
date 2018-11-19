@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="Edit Schedule" />
 
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Logout" />
     </group>
 
 </menu>
