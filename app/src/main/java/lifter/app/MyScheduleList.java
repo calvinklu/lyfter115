@@ -3,6 +3,7 @@ package lifter.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,7 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
 
         private DatabaseReference ref;
 
-
-        public MyScheduleList(Activity context, List<Schedule> myScheduleList){
+    public MyScheduleList(Activity context, List<Schedule> myScheduleList){
             super(context, R.layout.activity_schedule_list, myScheduleList);
             this.context = context;
             this.myScheduleList = myScheduleList;
@@ -67,15 +67,21 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
                             muscle.getText().toString());
 
                     schedule = s;
-                    deleteSchedule(schedule);
+                    Log.d("CLICKED", "onClick: right before remove nig work ");
+                    remove(mySchedule);
+                    notifyDataSetChanged();
+                    ref.child(schedule.getId()).removeValue();
+                    //deleteSchedule(schedule);
                 }
             });
             return myListViewItem;
+
         }
 
         private void deleteSchedule(Schedule schedule) {
-            ref.child(schedule.getId()).removeValue();
+            //ref.child(schedule.getId()).removeValue();
             myScheduleList.remove(schedule);
+            notifyDataSetChanged();
         }
 }
 

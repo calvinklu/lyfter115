@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class MySchedule extends AppCompatActivity {
+public class MySchedule extends AppCompatActivity{
 
     private Schedule schedule;
 
@@ -36,11 +37,11 @@ public class MySchedule extends AppCompatActivity {
     ListView ListViewSchedule;
     List<Schedule> myScheduleList;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
-
 
         ref = FirebaseDatabase.getInstance().getReference("schedule");
 
@@ -70,7 +71,8 @@ public class MySchedule extends AppCompatActivity {
         super.onResume();
 
     }
-//
+
+
     // This method will just show the menu item (which is our button "ADD")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,7 +97,6 @@ public class MySchedule extends AppCompatActivity {
             Collections.reverse(myScheduleList);
             MyScheduleList myAdapter = new MyScheduleList(MySchedule.this, myScheduleList);
             ListViewSchedule.setAdapter(myAdapter);
-
         }
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
