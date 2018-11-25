@@ -2,6 +2,7 @@ package lifter.app;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,8 +15,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
@@ -25,11 +29,10 @@ public class AddTimeActivity extends AppCompatActivity {
     Spinner day;
     ProgressBar progress;
 
-    FirebaseAuth auth;
-    FirebaseUser u;
-
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser u = auth.getCurrentUser();
     int fromHours, fromMinute, toHour, toMinute;
-
+    String user_email = u.getEmail();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +50,8 @@ public class AddTimeActivity extends AppCompatActivity {
         FirebaseDatabase databaseSchedule = FirebaseDatabase.getInstance();
         final DatabaseReference ref = databaseSchedule.getReference("schedule");
 
-        auth = FirebaseAuth.getInstance();
-        u = auth.getCurrentUser();
+//        auth = FirebaseAuth.getInstance();
+//        u = auth.getCurrentUser();
 
 
 
@@ -69,14 +72,16 @@ public class AddTimeActivity extends AppCompatActivity {
     }
 
 
+
     private void addSchedule(DatabaseReference ref){
 
         Bundle extras = new Bundle();
 
-        String fromTime = fromBtn.getText().toString();
-        String toTime = toBtn.getText().toString();
-        String etDay = day.getSelectedItem().toString();
+        final String fromTime = fromBtn.getText().toString();
+        final String toTime = toBtn.getText().toString();
+        final String etDay = day.getSelectedItem().toString();
         String email_content = u.getEmail();
+
 
         if(!TextUtils.isEmpty(fromTime)
                 && !TextUtils.isEmpty(toTime)
@@ -85,6 +90,35 @@ public class AddTimeActivity extends AppCompatActivity {
                 // toHour must be greater than fromHour
                 // reserved range of time must be at least an hour
                 if (fromHours < toHour && (toHour - fromHours >= 1)) {
+
+                    ref.orderByChild("email").equalTo(user_email).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String workout_day = "";
+                            for(DataSnapshot datas: dataSnapshot.getChildren()){
+                               workout_day = datas.child("day").getValue().toString();
+                                if(workout_day.equals(etDay)){
+                                    String fr_time = datas.child("from").getValue().toString();
+                                    String to_time = datas.child("to").getValue().toString();
+                                    int new_ftime = Integer.parseInt(fr_time);
+                                    int new_ttime = Integer.parseInt(to_time);
+                                    int old_ftime = Integer.parseInt(fromTime);
+                                    int old_ttime = Integer.parseInt(toTime);
+                                    if(new_ftime == old_ftime || new_ttime == old_ttime){ //if there exists a workout that starts or ends at same time return error
+                                        message("You entered the same start or end time as one or more of your previous workouts!");
+                                    }
+
+                                }
+                            }
+
+//                            checkConflict(user_workouts, etDay, fromTime, toTime);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
 
                     String id = ref.push().getKey();
 
@@ -109,9 +143,47 @@ public class AddTimeActivity extends AppCompatActivity {
         }
         else
             Toast.makeText(this, "You have not filled out a required field", Toast.LENGTH_LONG).show();
+
+
     }
 
 
+    public void message(String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+// public void checkConflict(String list, String day, String from, String to){
+//     for(int i=0; i<list.length(); i++){
+//
+//
+//     }
+//
+// }
+
+
+
+//    public void noConflicts(DatabaseReference ref){
+//        ref.orderByChild("email").equalTo(userid).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//
+//                for(DataSnapshot datas: dataSnapshot.getChildren()){
+//                    String user_workouts = datas.child("day").getValue().toString();
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//
+//    }
+
+    //clock for "From" option
     public void setFromBtn(View v) {
         Calendar calendar = Calendar.getInstance();
 
@@ -148,7 +220,7 @@ public class AddTimeActivity extends AppCompatActivity {
         from.show();
     }
 
-
+    //clock for "To" option
     public void setToBtn(View v) {
         Calendar calendar = Calendar.getInstance();
 
