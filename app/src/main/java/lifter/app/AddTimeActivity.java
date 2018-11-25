@@ -100,18 +100,25 @@ public class AddTimeActivity extends AppCompatActivity {
                                 if(workout_day.equals(etDay)){
                                     String fr_time = datas.child("from").getValue().toString();
                                     String to_time = datas.child("to").getValue().toString();
-                                    int new_ftime = Integer.parseInt(fr_time);
-                                    int new_ttime = Integer.parseInt(to_time);
-                                    int old_ftime = Integer.parseInt(fromTime);
-                                    int old_ttime = Integer.parseInt(toTime);
+                                    int new_ftime = Integer.valueOf(fr_time);
+                                    int new_ttime = Integer.valueOf(to_time);
+                                    int old_ftime = Integer.valueOf(fromTime);
+                                    int old_ttime = Integer.valueOf(toTime);
                                     if(new_ftime == old_ftime || new_ttime == old_ttime){ //if there exists a workout that starts or ends at same time return error
                                         message("You entered the same start or end time as one or more of your previous workouts!");
+                                    }
+                                    //if the new starting time is before one of the previous workouts start times and it ends before or after one of those times print error
+                                    if((new_ftime < old_ftime && new_ttime < old_ttime) || (new_ftime < old_ftime && new_ttime > new_ftime)){
+                                        message("this time overlaps with one of your previous workouts!");
+                                    }
+                                    else if((new_ftime > old_ftime && new_ttime < old_ttime) || (new_ftime > old_ftime && new_ttime > new_ftime)){
+                                        message("this time overlaps with one of your previous workouts!");
                                     }
 
                                 }
                             }
 
-//                            checkConflict(user_workouts, etDay, fromTime, toTime);
+
                         }
 
                         @Override
@@ -151,37 +158,10 @@ public class AddTimeActivity extends AppCompatActivity {
     public void message(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
-// public void checkConflict(String list, String day, String from, String to){
-//     for(int i=0; i<list.length(); i++){
-//
-//
-//     }
-//
-// }
 
 
 
-//    public void noConflicts(DatabaseReference ref){
-//        ref.orderByChild("email").equalTo(userid).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//
-//                for(DataSnapshot datas: dataSnapshot.getChildren()){
-//                    String user_workouts = datas.child("day").getValue().toString();
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//
-//    }
+
 
     //clock for "From" option
     public void setFromBtn(View v) {
