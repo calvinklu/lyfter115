@@ -1,5 +1,6 @@
 package lifter.app;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -30,6 +31,8 @@ public class MySchedule extends AppCompatActivity{
 
     private Schedule schedule;
 
+    Dialog myDialog;
+
     FirebaseAuth auth;
     FirebaseUser u;
     DatabaseReference ref;
@@ -42,6 +45,7 @@ public class MySchedule extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
+        myDialog = new Dialog(this);
 
         ref = FirebaseDatabase.getInstance().getReference("schedule");
 
@@ -66,6 +70,8 @@ public class MySchedule extends AppCompatActivity{
             }
         });
     }
+
+
 
     protected void onResume() {
         super.onResume();
