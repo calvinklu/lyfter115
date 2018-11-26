@@ -91,29 +91,48 @@ public class AddTimeActivity extends AppCompatActivity {
                 // reserved range of time must be at least an hour
                 if (fromHours < toHour && (toHour - fromHours >= 1)) {
 
+                    //pulls the data snap of current user and checks if the new workout to be added will be
                     ref.orderByChild("email").equalTo(user_email).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             String workout_day = "";
+                            int new_ftime = Integer.valueOf(fromTime.replaceAll("[^\\d.]", ""));
+                            int new_ttime = Integer.valueOf(toTime.replaceAll("[^\\d.]", ""));
+                            boolean before_ok = false;
+                            boolean after_ok = false;
+
+
                             for(DataSnapshot datas: dataSnapshot.getChildren()){
                                workout_day = datas.child("day").getValue().toString();
                                 if(workout_day.equals(etDay)){
                                     String fr_time = datas.child("from").getValue().toString();
                                     String to_time = datas.child("to").getValue().toString();
-                                    int new_ftime = Integer.valueOf(fr_time);
-                                    int new_ttime = Integer.valueOf(to_time);
-                                    int old_ftime = Integer.valueOf(fromTime);
-                                    int old_ttime = Integer.valueOf(toTime);
-                                    if(new_ftime == old_ftime || new_ttime == old_ttime){ //if there exists a workout that starts or ends at same time return error
-                                        message("You entered the same start or end time as one or more of your previous workouts!");
+                                    String from = datas.child("from").getValue().toString();
+                                    String to = datas.child("to").getValue().toString();
+                                    fr_time = fr_time.replaceAll("[^\\d.]", "");
+                                    to_time = to_time.replaceAll("[^\\d.]", "");
+                                    int old_ftime = Integer.valueOf(fr_time);
+                                    int old_ttime = Integer.valueOf(to_time);
+                                    //check to see if the new workout can be before or after the iterated workout
+                                    if((new_ftime <= old_ftime && new_ttime <= old_ftime) ){
+                                        before_ok = true;
+                                    }else
+                                    {
+                                        before_ok = false;
                                     }
-                                    //if the new starting time is before one of the previous workouts start times and it ends before or after one of those times print error
-                                    if((new_ftime < old_ftime && new_ttime < old_ttime) || (new_ftime < old_ftime && new_ttime > new_ftime)){
-                                        message("this time overlaps with one of your previous workouts!");
+                                    //if the new workout's start time is before the old workouts end time
+                                    if(new_ftime >= old_ttime){ //checks to see if can start a workout after another workout
+                                        after_ok = true;
                                     }
-                                    else if((new_ftime > old_ftime && new_ttime < old_ttime) || (new_ftime > old_ftime && new_ttime > new_ftime)){
-                                        message("this time overlaps with one of your previous workouts!");
+                                    else{
+                                        after_ok = false;
                                     }
+                                    //if you cannot put in before or after
+                                    if(!(before_ok || after_ok)){
+                                        message("your new workout overlaps with one of the current workouts " + from +" to " + to);
+                                        break;
+                                    }
+
 
                                 }
                             }
