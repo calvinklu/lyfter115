@@ -25,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class AddWorkoutActivity extends AppCompatActivity {
 
-    Button add,  exit;
+    Button add,  exit, back;
     Spinner muscle;
     ProgressBar progress;
 
@@ -41,6 +41,8 @@ public class AddWorkoutActivity extends AppCompatActivity {
         add = (Button) findViewById(R.id.add);
         exit = (Button) findViewById(R.id.exit);
         progress = (ProgressBar) findViewById(R.id.progress);
+        //back = findViewById(R.id.back);
+        final Bundle timeBundle = savedInstanceState;
 
 
         FirebaseDatabase databaseSchedule = FirebaseDatabase.getInstance();
@@ -58,6 +60,12 @@ public class AddWorkoutActivity extends AppCompatActivity {
             }
         });
 
+        /*back.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                goBack(v,timeBundle);
+            }
+        });*/
+
 
         add.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -67,7 +75,12 @@ public class AddWorkoutActivity extends AppCompatActivity {
         });
     }
 
+    public void goBack(View v, Bundle time){
+        Intent i = new Intent(AddWorkoutActivity.this, AddTimeActivity.class);
+        i.putExtras(time);
+        startActivity(i);
 
+    }
     private void addWorkout(DatabaseReference ref) {
 
         String etMuscle = muscle.getSelectedItem().toString();

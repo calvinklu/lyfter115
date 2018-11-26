@@ -1,6 +1,7 @@
 package lifter.app;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -22,13 +23,40 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
         private List<Schedule> myScheduleList;
         private Schedule schedule;
         private View myListViewItem;
-
         private DatabaseReference ref;
 
-    public MyScheduleList(Activity context, List<Schedule> myScheduleList){
+        Dialog myDialog;
+
+        public MyScheduleList(Activity context, List<Schedule> myScheduleList){
             super(context, R.layout.activity_schedule_list, myScheduleList);
             this.context = context;
             this.myScheduleList = myScheduleList;
+            myDialog = new Dialog(context);
+        }
+
+       public void showPopup(View v, Schedule s){
+            final Schedule schedule = s;
+            TextView txtclose;
+            Button yes_btn;
+            Button no_btn;
+            myDialog.setContentView(R.layout.delete_popup);
+            yes_btn =  myDialog.findViewById(R.id.yes_btn);
+            no_btn = myDialog.findViewById(R.id.no_btn);
+            yes_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteSchedule(schedule);
+                    myDialog.dismiss();
+
+                }
+            });
+            no_btn.setOnClickListener((new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    myDialog.dismiss();
+                }
+            }));
+            myDialog.show();
         }
 
         @NonNull
@@ -59,19 +87,19 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
             delete_btn.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Schedule s = new Schedule(mySchedule.getId(),
+                    showPopup(v,mySchedule);
+                    /*Schedule s = new Schedule(mySchedule.getId(),
                             mySchedule.getEmail(),
                             day.getText().toString(),
                             from.getText().toString(),
                             to.getText().toString(),
                             muscle.getText().toString());
 
-                    schedule = s;
-                    Log.d("CLICKED", "onClick: right before remove nig work ");
+                    /*schedule = s;
                     remove(mySchedule);
                     notifyDataSetChanged();
-                    ref.child(schedule.getId()).removeValue();
-                    //deleteSchedule(schedule);
+                    ref.child(schedule.getId()).removeValue();*/
+                    //deleteSchedule(mySchedule);
                 }
             });
             return myListViewItem;
@@ -79,7 +107,7 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
         }
 
         private void deleteSchedule(Schedule schedule) {
-            //ref.child(schedule.getId()).removeValue();
+            ref.child(schedule.getId()).removeValue();
             myScheduleList.remove(schedule);
             notifyDataSetChanged();
         }
