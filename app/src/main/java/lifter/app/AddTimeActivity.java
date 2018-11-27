@@ -22,6 +22,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class AddTimeActivity extends AppCompatActivity {
@@ -49,7 +52,6 @@ public class AddTimeActivity extends AppCompatActivity {
 
         FirebaseDatabase databaseSchedule = FirebaseDatabase.getInstance();
         final DatabaseReference ref = databaseSchedule.getReference("schedule");
-
 //        auth = FirebaseAuth.getInstance();
 //        u = auth.getCurrentUser();
 
@@ -72,16 +74,21 @@ public class AddTimeActivity extends AppCompatActivity {
     }
 
 
+    public interface MyCallback {
+        void onCallback(AtomicBoolean value);
+    }
+
 
     private void addSchedule(DatabaseReference ref){
 
-        Bundle extras = new Bundle();
+        final Bundle extras = new Bundle();
 
         final String fromTime = fromBtn.getText().toString();
         final String toTime = toBtn.getText().toString();
         final String etDay = day.getSelectedItem().toString();
-        String email_content = u.getEmail();
-
+        final String email_content = u.getEmail();
+        FirebaseDatabase databaseSchedule = FirebaseDatabase.getInstance();
+        final DatabaseReference reference = databaseSchedule.getReference("schedule");
 
         if(!TextUtils.isEmpty(fromTime)
                 && !TextUtils.isEmpty(toTime)
@@ -91,7 +98,7 @@ public class AddTimeActivity extends AppCompatActivity {
                 // reserved range of time must be at least an hour
                 if (fromHours < toHour && (toHour - fromHours >= 1)) {
 
-                    //pulls the data snap of current user and checks if the new workout to be added will be
+             //       final AtomicBoolean conflicted = new AtomicBoolean(false);
                     ref.orderByChild("email").equalTo(user_email).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -100,11 +107,11 @@ public class AddTimeActivity extends AppCompatActivity {
                             int new_ttime = Integer.valueOf(toTime.replaceAll("[^\\d.]", ""));
                             boolean before_ok = false;
                             boolean after_ok = false;
+                            boolean conflict = false;
 
-
-                            for(DataSnapshot datas: dataSnapshot.getChildren()){
-                               workout_day = datas.child("day").getValue().toString();
-                                if(workout_day.equals(etDay)){
+                            for (DataSnapshot datas : dataSnapshot.getChildren()) {
+                                workout_day = datas.child("day").getValue().toString();
+                                if (workout_day.equals(etDay)) {
                                     String fr_time = datas.child("from").getValue().toString();
                                     String to_time = datas.child("to").getValue().toString();
                                     String from = datas.child("from").getValue().toString();
@@ -114,29 +121,42 @@ public class AddTimeActivity extends AppCompatActivity {
                                     int old_ftime = Integer.valueOf(fr_time);
                                     int old_ttime = Integer.valueOf(to_time);
                                     //check to see if the new workout can be before or after the iterated workout
-                                    if((new_ftime <= old_ftime && new_ttime <= old_ftime) ){
+                                    if ((new_ftime <= old_ftime && new_ttime <= old_ftime)) {
                                         before_ok = true;
-                                    }else
-                                    {
+                                    } else {
                                         before_ok = false;
                                     }
                                     //if the new workout's start time is before the old workouts end time
-                                    if(new_ftime >= old_ttime){ //checks to see if can start a workout after another workout
+                                    if (new_ftime >= old_ttime) { //checks to see if can start a workout after another workout
                                         after_ok = true;
-                                    }
-                                    else{
+                                    } else {
                                         after_ok = false;
                                     }
                                     //if you cannot put in before or after
-                                    if(!(before_ok || after_ok)){
-                                        message("your new workout overlaps with one of the current workouts " + from +" to " + to);
+                                    if (!(before_ok || after_ok)) {
+                                        message("Your new workout overlaps with one of the current workouts " + from + " to " + to);
+                                        conflict = true;
                                         break;
                                     }
-
-
                                 }
                             }
+                            if (conflict == true) {
+                                        message("Please choose another schedule");
+                            }
+                            else{
+                                        String id = reference.push().getKey();
 
+                                        Intent i = new Intent(AddTimeActivity.this, AddWorkoutActivity.class);
+
+                                        extras.putString("id", id);
+                                        extras.putString("email_content", email_content);
+                                        extras.putString("day", etDay);
+                                        extras.putString("fromTime", fromTime);
+                                        extras.putString("toTime", toTime);
+
+                                        i.putExtras(extras);
+                                        startActivity(i);
+                            }
 
                         }
 
@@ -144,25 +164,8 @@ public class AddTimeActivity extends AppCompatActivity {
                         public void onCancelled(DatabaseError databaseError) {
 
                         }
+
                     });
-
-                    String id = ref.push().getKey();
-
-                    // Reflects in Schedule java file (the scheduling object)
-
-//                    Schedule schedule = new Schedule(id, email_content, etDay, fromTime, toTime);
-//                    ref.child(id).setValue(schedule);
-
-                    Intent i = new Intent(AddTimeActivity.this, AddWorkoutActivity.class);
-
-                    extras.putString("id", id);
-                    extras.putString("email_content", email_content);
-                    extras.putString("day", etDay);
-                    extras.putString("fromTime", fromTime);
-                    extras.putString("toTime", toTime);
-
-                    i.putExtras(extras);
-                    startActivity(i);
                 }
                 else
                     Toast.makeText(this, "You have not filled a correct time slot", Toast.LENGTH_LONG).show();
@@ -172,6 +175,7 @@ public class AddTimeActivity extends AppCompatActivity {
 
 
     }
+
 
 
     public void message(String msg){
