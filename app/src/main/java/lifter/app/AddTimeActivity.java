@@ -72,12 +72,7 @@ public class AddTimeActivity extends AppCompatActivity {
             }
         });
     }
-
-
-    public interface MyCallback {
-        void onCallback(AtomicBoolean value);
-    }
-
+    
 
     private void addSchedule(DatabaseReference ref){
 
@@ -90,6 +85,7 @@ public class AddTimeActivity extends AppCompatActivity {
         FirebaseDatabase databaseSchedule = FirebaseDatabase.getInstance();
         final DatabaseReference reference = databaseSchedule.getReference("schedule");
 
+
         if(!TextUtils.isEmpty(fromTime)
                 && !TextUtils.isEmpty(toTime)
                 && !TextUtils.isEmpty(etDay)) {
@@ -98,67 +94,105 @@ public class AddTimeActivity extends AppCompatActivity {
                 // reserved range of time must be at least an hour
                 if (fromHours < toHour && (toHour - fromHours >= 1)) {
 
-             //       final AtomicBoolean conflicted = new AtomicBoolean(false);
+                    //gets data snapshot of all the workout times that the user has
                     ref.orderByChild("email").equalTo(user_email).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            String workout_day = "";
+                            String workout_day;
+                            String new_workout_start = fromTime.substring(fromTime.length() - 2);  //if the workout starts in the AM's
+                            String new_workout_finish = toTime.substring(toTime.length() - 2);
+                            String from = "";
+                            String to = "";
                             int new_ftime = Integer.valueOf(fromTime.replaceAll("[^\\d.]", ""));
                             int new_ttime = Integer.valueOf(toTime.replaceAll("[^\\d.]", ""));
+
                             boolean before_ok = false;
                             boolean after_ok = false;
                             boolean conflict = false;
 
+                            //checks to see if the times for the start and finish times are AM or PM
+                            // if it is PM add 12 to the hours to make it military time
+                            if(fromTime.substring(fromTime.length()-2).equals("PM")){
+                                new_ftime = add_twelve(new_ftime);
+                            }
+                            if(toTime.substring(toTime.length()-2).equals("PM")){
+                                new_ttime = add_twelve(new_ttime);
+                            }
+
                             for (DataSnapshot datas : dataSnapshot.getChildren()) {
                                 workout_day = datas.child("day").getValue().toString();
-                                if (workout_day.equals(etDay)) {
+                                if (workout_day.equals(etDay)) { //workout times from the database
                                     String fr_time = datas.child("from").getValue().toString();
                                     String to_time = datas.child("to").getValue().toString();
-                                    String from = datas.child("from").getValue().toString();
-                                    String to = datas.child("to").getValue().toString();
+                                    from = datas.child("from").getValue().toString();
+                                    to = datas.child("to").getValue().toString();
+
+                                    String old_workout_start =  from.substring(from.length() - 2);
+                                    String old_workout_finish = to.substring(to.length() - 2);
+
+
                                     fr_time = fr_time.replaceAll("[^\\d.]", "");
                                     to_time = to_time.replaceAll("[^\\d.]", "");
                                     int old_ftime = Integer.valueOf(fr_time);
                                     int old_ttime = Integer.valueOf(to_time);
-                                    //check to see if the new workout can be before or after the iterated workout
-                                    if ((new_ftime <= old_ftime && new_ttime <= old_ftime)) {
-                                        before_ok = true;
-                                    } else {
-                                        before_ok = false;
+
+                                    //checks if the iterated workout is AM or PM
+                                    // if PM add 12 to it
+                                    if(from.substring(from.length()-2).equals("PM")){
+                                        old_ftime = add_twelve(old_ftime);
                                     }
-                                    //if the new workout's start time is before the old workouts end time
-                                    if (new_ftime >= old_ttime) { //checks to see if can start a workout after another workout
-                                        after_ok = true;
-                                    } else {
-                                        after_ok = false;
+                                    if(to.substring(to.length()-2).equals("PM")){
+                                        old_ttime = add_twelve(old_ttime);
                                     }
-                                    //if you cannot put in before or after
-                                    if (!(before_ok || after_ok)) {
-                                        message("Your new workout overlaps with one of the current workouts " + from + " to " + to);
+                                    //checks for the case if the workout times is also AM or PM and same the start and finish time
+                                    if (old_workout_start.equals(new_workout_start) && old_workout_finish.equals(new_workout_finish)
+                                            && (new_ftime == old_ftime) && (new_ttime == old_ttime)) {
                                         conflict = true;
                                         break;
                                     }
+                                    else {
+                                        //check to see if the new workout can be before or after the iterated workout
+                                        if ((new_ftime <= old_ftime && new_ttime <= old_ftime)) {
+                                            before_ok = true;
+                                        } else {
+                                            before_ok = false;
+                                        }
+                                        //if the new workout's start time is before the old workouts end time
+                                        if (new_ftime >= old_ttime) { //checks to see if can start a workout after another workout
+                                            after_ok = true;
+                                        } else {
+                                            after_ok = false;
+                                        }
+                                        //if you cannot put in before or after
+                                        if (!(before_ok || after_ok)) {
+                                            conflict = true;
+                                            break;
+                                        }
+                                    }
                                 }
                             }
+
                             if (conflict == true) {
-                                        message("Please choose another schedule");
+                                    message("Your new workout overlaps with one of the current workouts " + from + " to " + to);
+                                    message("Please choose another schedule.");
                             }
                             else{
-                                        String id = reference.push().getKey();
+                                    String id = reference.push().getKey();
 
-                                        Intent i = new Intent(AddTimeActivity.this, AddWorkoutActivity.class);
+                                    Intent i = new Intent(AddTimeActivity.this, AddWorkoutActivity.class);
 
-                                        extras.putString("id", id);
-                                        extras.putString("email_content", email_content);
-                                        extras.putString("day", etDay);
-                                        extras.putString("fromTime", fromTime);
-                                        extras.putString("toTime", toTime);
+                                    extras.putString("id", id);
+                                    extras.putString("email_content", email_content);
+                                    extras.putString("day", etDay);
+                                    extras.putString("fromTime", fromTime);
+                                    extras.putString("toTime", toTime);
 
-                                        i.putExtras(extras);
-                                        startActivity(i);
+                                    i.putExtras(extras);
+                                    startActivity(i);
+                                }
+
                             }
 
-                        }
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
@@ -183,7 +217,16 @@ public class AddTimeActivity extends AppCompatActivity {
     }
 
 
-
+    public int add_twelve(int time){
+        String result;
+        int hour = Integer.parseInt(Integer.toString(time).substring(0,1));
+        String minute_string = Integer.toString(time);
+        String minutes = "" + minute_string.charAt(minute_string.length()-2) + minute_string.charAt(minute_string.length()-1);
+        hour += 12;
+        result = Integer.toString(hour) + minutes;
+        time = Integer.parseInt(result);
+        return time;
+    }
 
 
     //clock for "From" option
