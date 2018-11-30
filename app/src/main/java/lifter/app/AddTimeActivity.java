@@ -72,7 +72,7 @@ public class AddTimeActivity extends AppCompatActivity {
             }
         });
     }
-    
+
 
     private void addSchedule(DatabaseReference ref){
 

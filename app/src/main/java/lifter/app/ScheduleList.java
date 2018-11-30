@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.Collections;
 import java.util.List;
-
+import java.util.Comparator;
 
 public class ScheduleList extends ArrayAdapter<Schedule>{
     private Activity context;
@@ -20,7 +20,13 @@ public class ScheduleList extends ArrayAdapter<Schedule>{
     public ScheduleList(Activity context, List<Schedule> scheduleList){
         super(context, R.layout.list_layout, scheduleList);
         //super(context, R.layout.activity_schedule_list, scheduleList);
-        Collections.reverse(scheduleList);
+//        Collections.reverse(scheduleList);
+        Collections.sort(scheduleList, new Comparator<Schedule>() {
+            @Override
+            public int compare(Schedule schedule, Schedule t1) {
+                return schedule.getDay().compareTo(t1.getDay());
+            }
+        });
         this.context = context;
         this.scheduleList = scheduleList;
     }

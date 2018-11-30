@@ -24,6 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -89,18 +91,21 @@ public class MySchedule extends AppCompatActivity{
         return super.onCreateOptionsMenu(menu);
     }
 
-//
-//
+
     ValueEventListener my_listener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             myScheduleList.clear();
             for (DataSnapshot scheduleSnapshot : dataSnapshot.getChildren()) {
-                // do something with the schedules
                 Schedule schedule = scheduleSnapshot.getValue(Schedule.class);
                 myScheduleList.add(schedule);
             }
-            Collections.reverse(myScheduleList);
+             Collections.sort(myScheduleList, new Comparator<Schedule>() {
+                 @Override
+                 public int compare(Schedule schedule, Schedule t1) {
+                     return schedule.getDay().compareTo(t1.getDay());
+                 }
+             });
             MyScheduleList myAdapter = new MyScheduleList(MySchedule.this, myScheduleList);
             ListViewSchedule.setAdapter(myAdapter);
         }
