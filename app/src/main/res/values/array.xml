@@ -2,6 +2,7 @@
 <resources>
 
     <string-array name="spinnerItems">
+        <item>""</item>
         <item>Monday</item>
         <item>Tuesday</item>
         <item>Wednesday</item>
@@ -13,6 +14,7 @@
 
 
     <string-array name="spinnerMuscles">
+        <item>""</item>
         <item>Lower Body</item>
         <item>Upper Body</item>
         <item>Core</item>

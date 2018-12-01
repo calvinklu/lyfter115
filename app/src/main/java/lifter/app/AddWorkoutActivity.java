@@ -2,6 +2,7 @@ package lifter.app;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -41,9 +42,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
         add = (Button) findViewById(R.id.add);
         exit = (Button) findViewById(R.id.exit);
         progress = (ProgressBar) findViewById(R.id.progress);
-        //back = findViewById(R.id.back);
-        final Bundle timeBundle = savedInstanceState;
-
+        back = findViewById(R.id.back);
 
         FirebaseDatabase databaseSchedule = FirebaseDatabase.getInstance();
         final DatabaseReference ref = databaseSchedule.getReference("schedule");
@@ -60,11 +59,29 @@ public class AddWorkoutActivity extends AppCompatActivity {
             }
         });
 
-        /*back.setOnClickListener(new Button.OnClickListener() {
+        back.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                goBack(v,timeBundle);
+                Intent i = getIntent();
+
+                Bundle extras = i.getExtras();
+                String day = extras.getString("day");
+                String fromTime = extras.getString("fromTime");
+                String toTime = extras.getString("toTime");
+                int fromHours = extras.getInt("fromHours");
+                int toHour = extras.getInt("toHour");
+
+                final Bundle backed = new Bundle();
+                backed.putString("day", day);
+                backed.putString("fromTime", fromTime);
+                backed.putString("toTime", toTime);
+                backed.putInt("fromHours", fromHours);
+                backed.putInt("toHour", toHour);
+
+                Intent j = new Intent(AddWorkoutActivity.this, AddTimeActivity.class);
+                j.putExtras(backed);
+                startActivity(j);
             }
-        });*/
+        });
 
 
         add.setOnClickListener(new View.OnClickListener(){
@@ -75,17 +92,12 @@ public class AddWorkoutActivity extends AppCompatActivity {
         });
     }
 
-    public void goBack(View v, Bundle time){
-        Intent i = new Intent(AddWorkoutActivity.this, AddTimeActivity.class);
-        i.putExtras(time);
-        startActivity(i);
-
-    }
     private void addWorkout(DatabaseReference ref) {
 
         String etMuscle = muscle.getSelectedItem().toString();
 
-        if (!TextUtils.isEmpty(etMuscle)) {
+        if (!TextUtils.isEmpty(etMuscle)
+                && !etMuscle.equals("")){
 
             Intent i = getIntent();
             Bundle extras = i.getExtras();
@@ -95,6 +107,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
             String day = extras.getString("day");
             String fromTime = extras.getString("fromTime");
             String toTime = extras.getString("toTime");
+
 
             // Reflects in Schedule java file (the scheduling object)
             Schedule schedule = new Schedule(id, email_content, day, fromTime, toTime, etMuscle);
@@ -106,7 +119,4 @@ public class AddWorkoutActivity extends AppCompatActivity {
         } else
             Toast.makeText(this, "You have not selected a muscle", Toast.LENGTH_LONG).show();
     }
-
-
-
 }
