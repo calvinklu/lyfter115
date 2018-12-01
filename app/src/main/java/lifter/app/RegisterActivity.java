@@ -78,7 +78,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
         switch (v.getId()) {
 
             case R.id.login:
-                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                 break;
 
             case R.id.register:
@@ -135,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
                             Snackbar.make(title, "Login Successful", Snackbar.LENGTH_LONG).show();
                             Log.d(TAG, "Success!");
 
-                            startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
 
                         } else {
 

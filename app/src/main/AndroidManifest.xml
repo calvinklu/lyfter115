@@ -39,6 +39,10 @@
             android:label="@string/title_activity_sidebar"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".LoginActivity"
+            android:label="Login"></activity>
+
     </application>
 
 </manifest>

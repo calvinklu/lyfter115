@@ -47,6 +47,7 @@ public class Sidebar extends AppCompatActivity
     ListView myListViewSchedule;
     List<Schedule> scheduleList;
     List<Schedule> myScheduleList;
+    private SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +148,13 @@ public class Sidebar extends AppCompatActivity
         else if (id == R.id.logout) {
             FirebaseAuth auth = FirebaseAuth.getInstance();
             auth.signOut();
-            Intent i = new Intent(this, MainActivity.class);
+
+            sharedpreferences=getApplicationContext().getSharedPreferences("Preferences", 0);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.remove("LOGIN");
+            editor.apply();
+
+            Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
         }
 
