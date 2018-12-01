@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.Collections;
 import java.util.List;
 import java.util.Comparator;
@@ -19,17 +20,30 @@ public class ScheduleList extends ArrayAdapter<Schedule>{
 
     public ScheduleList(Activity context, List<Schedule> scheduleList){
         super(context, R.layout.list_layout, scheduleList);
-        //super(context, R.layout.activity_schedule_list, scheduleList);
-//        Collections.reverse(scheduleList);
+        final String [] days =  {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        HashMap filler = new HashMap(7);
+        final HashMap days_hash = fillHash(filler, days);
         Collections.sort(scheduleList, new Comparator<Schedule>() {
             @Override
             public int compare(Schedule schedule, Schedule t1) {
-                return schedule.getDay().compareTo(t1.getDay());
+                String hashed_x = days_hash.get(schedule.getDay()).toString();
+                String hashed_y = days_hash.get(t1.getDay()).toString();
+                return hashed_x.compareTo(hashed_y);
             }
         });
+
         this.context = context;
         this.scheduleList = scheduleList;
     }
+
+    public HashMap fillHash(HashMap days, String[] d){
+        int ascii_a = 66;
+        for(int i=0; i<7 ; i++){
+            days.put(d[i], (char)(ascii_a+i));
+        }
+        return days;
+    }
+
 
     @NonNull
     @Override

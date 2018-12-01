@@ -96,6 +96,9 @@ public class MySchedule extends AppCompatActivity{
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             myScheduleList.clear();
+            final String [] days =  {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+            HashMap filler = new HashMap(7);
+            final HashMap days_hash = fillHash(filler, days);
             for (DataSnapshot scheduleSnapshot : dataSnapshot.getChildren()) {
                 Schedule schedule = scheduleSnapshot.getValue(Schedule.class);
                 myScheduleList.add(schedule);
@@ -103,7 +106,9 @@ public class MySchedule extends AppCompatActivity{
              Collections.sort(myScheduleList, new Comparator<Schedule>() {
                  @Override
                  public int compare(Schedule schedule, Schedule t1) {
-                     return schedule.getDay().compareTo(t1.getDay());
+                     String hashed_x = days_hash.get(schedule.getDay()).toString();
+                     String hashed_y = days_hash.get(t1.getDay()).toString();
+                     return hashed_x.compareTo(hashed_y);
                  }
              });
             MyScheduleList myAdapter = new MyScheduleList(MySchedule.this, myScheduleList);
@@ -114,6 +119,14 @@ public class MySchedule extends AppCompatActivity{
 
         }
     };
+
+    public HashMap fillHash(HashMap days, String[] d){
+        int ascii_a = 66;
+        for(int i=0; i<7 ; i++){
+            days.put(d[i], (char)(ascii_a+i));
+        }
+        return days;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
