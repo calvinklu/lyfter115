@@ -19,75 +19,75 @@ import java.util.List;
 
 public class MyScheduleList extends ArrayAdapter<Schedule> {
 
-        private Activity context;
-        private List<Schedule> myScheduleList;
-        private Schedule schedule;
-        private View myListViewItem;
-        private DatabaseReference ref;
+    private Activity context;
+    private List<Schedule> myScheduleList;
+    private Schedule schedule;
+    private View myListViewItem;
+    private DatabaseReference ref;
 
-        Dialog myDialog;
+    Dialog myDialog;
 
-        public MyScheduleList(Activity context, List<Schedule> myScheduleList){
-            super(context, R.layout.activity_schedule_list, myScheduleList);
-            this.context = context;
-            this.myScheduleList = myScheduleList;
-            myDialog = new Dialog(context);
-        }
+    public MyScheduleList(Activity context, List<Schedule> myScheduleList){
+        super(context, R.layout.activity_schedule_list, myScheduleList);
+        this.context = context;
+        this.myScheduleList = myScheduleList;
+        myDialog = new Dialog(context);
+    }
 
-       public void showPopup(View v, Schedule s){
-            final Schedule schedule = s;
-            TextView txtclose;
-            Button yes_btn;
-            Button no_btn;
-            myDialog.setContentView(R.layout.delete_popup);
-            yes_btn =  myDialog.findViewById(R.id.yes_btn);
-            no_btn = myDialog.findViewById(R.id.no_btn);
-            yes_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteSchedule(schedule);
-                    myDialog.dismiss();
+    public void showPopup(View v, Schedule s){
+        final Schedule schedule = s;
+        TextView txtclose;
+        Button yes_btn;
+        Button no_btn;
+        myDialog.setContentView(R.layout.delete_popup);
+        yes_btn =  myDialog.findViewById(R.id.yes_btn);
+        no_btn = myDialog.findViewById(R.id.no_btn);
+        yes_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteSchedule(schedule);
+                myDialog.dismiss();
 
-                }
-            });
-            no_btn.setOnClickListener((new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    myDialog.dismiss();
-                }
-            }));
-            myDialog.show();
-        }
+            }
+        });
+        no_btn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+            }
+        }));
+        myDialog.show();
+    }
 
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = context.getLayoutInflater();
+    @NonNull
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = context.getLayoutInflater();
 
-            myListViewItem = inflater.inflate(R.layout.activity_schedule_list, null, true);
+        myListViewItem = inflater.inflate(R.layout.activity_schedule_list, null, true);
 
-            ref = FirebaseDatabase.getInstance().getReference("schedule");
+        ref = FirebaseDatabase.getInstance().getReference("schedule");
 
-            final TextView day = myListViewItem.findViewById(R.id.day);
-            final TextView from = myListViewItem.findViewById(R.id.from);
-            final TextView to = myListViewItem.findViewById(R.id.to);
-            final TextView muscle = myListViewItem.findViewById(R.id.muscle);
-
-
-            final Button delete_btn = myListViewItem.findViewById(R.id.delete_btn);
-
-            final Schedule mySchedule = myScheduleList.get(position);
+        final TextView day = myListViewItem.findViewById(R.id.day);
+        final TextView from = myListViewItem.findViewById(R.id.from);
+        final TextView to = myListViewItem.findViewById(R.id.to);
+        final TextView muscle = myListViewItem.findViewById(R.id.muscle);
 
 
-            day.setText(mySchedule.getDay());
-            from.setText(mySchedule.getFrom());
-            to.setText(mySchedule.getTo());
-            muscle.setText(mySchedule.getMuscle());
+        final Button delete_btn = myListViewItem.findViewById(R.id.delete_btn);
 
-            delete_btn.setOnClickListener(new Button.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showPopup(v,mySchedule);
+        final Schedule mySchedule = myScheduleList.get(position);
+
+
+        day.setText(mySchedule.getDay());
+        from.setText(mySchedule.getFrom());
+        to.setText(mySchedule.getTo());
+        muscle.setText(mySchedule.getMuscle());
+
+        delete_btn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopup(v,mySchedule);
                     /*Schedule s = new Schedule(mySchedule.getId(),
                             mySchedule.getEmail(),
                             day.getText().toString(),
@@ -99,17 +99,16 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
                     remove(mySchedule);
                     notifyDataSetChanged();
                     ref.child(schedule.getId()).removeValue();*/
-                    //deleteSchedule(mySchedule);
-                }
-            });
-            return myListViewItem;
+                //deleteSchedule(mySchedule);
+            }
+        });
+        return myListViewItem;
 
-        }
+    }
 
-        private void deleteSchedule(Schedule schedule) {
-            ref.child(schedule.getId()).removeValue();
-            myScheduleList.remove(schedule);
-            notifyDataSetChanged();
-        }
+    private void deleteSchedule(Schedule schedule) {
+        ref.child(schedule.getId()).removeValue();
+        myScheduleList.remove(schedule);
+        notifyDataSetChanged();
+    }
 }
-
