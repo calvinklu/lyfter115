@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +41,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
     private static final String TAG = "login";
@@ -54,14 +59,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        // condition false take it user on login form
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
-
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(getString(R.string.default_web_client_id))
-//                .requestEmail()
-//                .build();
 
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         login.setOnClickListener(this);
         register.setOnClickListener(this);
     }
+
 
 
     @Override
@@ -92,11 +95,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 if (!email.isEmpty() && !password.isEmpty()) {
 
                     progress.setVisibility(View.VISIBLE);
-
                     loginProcess(email, password);
 
-                } else {
-
+                }
+                else {
                     Snackbar.make(title, "Fields are empty!", Snackbar.LENGTH_LONG).show();
                 }
                 break;
@@ -118,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 }
             }
         }
-        return super.dispatchTouchEvent( event );
+        return super.dispatchTouchEvent( event );d
     }
 
 
