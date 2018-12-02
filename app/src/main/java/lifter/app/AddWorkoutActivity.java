@@ -33,6 +33,8 @@ public class AddWorkoutActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser u;
 
+    String etMuscle = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,14 @@ public class AddWorkoutActivity extends AppCompatActivity {
         u = auth.getCurrentUser();
 
 
+        if(getIntent().getExtras() != null) {
+            Intent j = getIntent();
+            Bundle backed = j.getExtras();
+
+            etMuscle = backed.getString("etMuscle");
+            setSpinText(muscle, etMuscle);
+        }
+
         exit.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(AddWorkoutActivity.this, Sidebar.class);
@@ -62,6 +72,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
         back.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent i = getIntent();
+                String etMuscle = muscle.getSelectedItem().toString();
 
                 Bundle extras = i.getExtras();
                 String day = extras.getString("day");
@@ -70,12 +81,13 @@ public class AddWorkoutActivity extends AppCompatActivity {
                 int fromHours = extras.getInt("fromHours");
                 int toHour = extras.getInt("toHour");
 
-                final Bundle backed = new Bundle();
+                Bundle backed = new Bundle();
                 backed.putString("day", day);
                 backed.putString("fromTime", fromTime);
                 backed.putString("toTime", toTime);
                 backed.putInt("fromHours", fromHours);
                 backed.putInt("toHour", toHour);
+                backed.putString("etMuscle", etMuscle);
 
                 Intent j = new Intent(AddWorkoutActivity.this, AddTimeActivity.class);
                 j.putExtras(backed);
@@ -91,6 +103,16 @@ public class AddWorkoutActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    public void setSpinText(Spinner spin, String text) {
+        for(int i= 0; i < spin.getAdapter().getCount(); i++) {
+            if(spin.getAdapter().getItem(i).toString().contains(text)) {
+                spin.setSelection(i);
+            }
+        }
+    }
+
 
     private void addWorkout(DatabaseReference ref) {
 

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -37,8 +38,7 @@ public class AddTimeActivity extends AppCompatActivity {
 
     int fromHours, fromMinute, toHour, toMinute;
     String user_email = u.getEmail();
-
-    //Boolean returned = false;
+    String etMuscle = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +55,7 @@ public class AddTimeActivity extends AppCompatActivity {
         FirebaseDatabase databaseSchedule = FirebaseDatabase.getInstance();
         final DatabaseReference ref = databaseSchedule.getReference("schedule");
 
+
         if(getIntent().getExtras() != null) {
             Intent j = getIntent();
             final Bundle backed = j.getExtras();
@@ -62,6 +63,8 @@ public class AddTimeActivity extends AppCompatActivity {
             String etDay = backed.getString("day");
             String fromTime = backed.getString("fromTime");
             String toTime = backed.getString("toTime");
+            etMuscle = backed.getString("etMuscle");
+
             int from = backed.getInt("fromHours");
             int to = backed.getInt("toHour");
 
@@ -72,7 +75,6 @@ public class AddTimeActivity extends AppCompatActivity {
             fromBtn.setText(fromTime);
             toBtn.setText(toTime);
         }
-
 
         exit.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -90,12 +92,11 @@ public class AddTimeActivity extends AppCompatActivity {
         });
     }
 
-    public void setSpinText(Spinner spin, String text)
-    {
-        for(int i= 0; i < spin.getAdapter().getCount(); i++)
-        {
-            if(spin.getAdapter().getItem(i).toString().contains(text))
-            {
+
+
+    public void setSpinText(Spinner spin, String text) {
+        for(int i= 0; i < spin.getAdapter().getCount(); i++) {
+            if(spin.getAdapter().getItem(i).toString().contains(text)) {
                 spin.setSelection(i);
             }
         }
@@ -216,6 +217,7 @@ public class AddTimeActivity extends AppCompatActivity {
                             extras.putString("day", etDay);
                             extras.putString("fromTime", fromTime);
                             extras.putString("toTime", toTime);
+                            extras.putString("etMuscle", etMuscle);
                             extras.putInt("fromHours", fromHours);
                             extras.putInt("toHour", toHour);
 

@@ -2,15 +2,19 @@ package lifter.app;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import 	android.view.LayoutInflater;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,18 +65,7 @@ public class MySchedule extends AppCompatActivity{
         my_query.addListenerForSingleValueEvent(my_listener);
         ListViewSchedule = (ListView) findViewById(R.id.ListViewSchedule);
         myScheduleList = new ArrayList<>();
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), AddTimeActivity.class);
-                startActivity(i);
-            }
-        });
     }
-
 
 
     protected void onResume() {
@@ -81,13 +74,19 @@ public class MySchedule extends AppCompatActivity{
     }
 
 
-    // This method will just show the menu item (which is our button "ADD")
+    // This method will just show the menu item (which is our button "Back")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         // the menu being referenced here is the menu.xml from res/menu/menu.xml
         inflater.inflate(R.menu.menu, menu);
+
+        MenuItem item = menu.getItem(0);
+        SpannableString s = new SpannableString("Clear");
+        s.setSpan(new ForegroundColorSpan(Color.RED), 0, s.length(), 0);
+        item.setTitle(s);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -115,6 +114,31 @@ public class MySchedule extends AppCompatActivity{
         }
     };
 
+
+    public void showPopup(View v){
+        Button yes_btn, no_btn;
+        myDialog.setContentView(R.layout.clear_popup);
+        yes_btn =  myDialog.findViewById(R.id.yes_btn);
+        no_btn = myDialog.findViewById(R.id.no_btn);
+
+        yes_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearSchedule();
+                myDialog.dismiss();
+            }
+        });
+
+        no_btn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+            }
+        }));
+        myDialog.show();
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -125,9 +149,33 @@ public class MySchedule extends AppCompatActivity{
                 Intent i = new Intent(this, Sidebar.class);
                 startActivity(i);
                 break;
+
+            case R.id.action_clear:
+
+                LayoutInflater inflater = (LayoutInflater)
+                        getSystemService(LAYOUT_INFLATER_SERVICE);
+                View v = inflater.inflate(R.layout.clear_popup, null);
+                showPopup(v);
+
+
+
+
             default:
                 super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    void clearSchedule(){
+        DatabaseReference root = FirebaseDatabase.getInstance().getReference();
+        root.setValue(null);
+
+        Query my_query = FirebaseDatabase.getInstance().getReference("schedule")
+                .orderByChild("email")
+                .equalTo(u.getEmail());
+
+        my_query.addListenerForSingleValueEvent(my_listener);
+        ListViewSchedule = (ListView) findViewById(R.id.ListViewSchedule);
+        myScheduleList = new ArrayList<>();
     }
 }

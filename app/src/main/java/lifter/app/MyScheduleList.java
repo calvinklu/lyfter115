@@ -3,7 +3,9 @@ package lifter.app;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +26,6 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
     private Schedule schedule;
     private View myListViewItem;
     private DatabaseReference ref;
-
     Dialog myDialog;
 
     public MyScheduleList(Activity context, List<Schedule> myScheduleList){
@@ -36,7 +37,6 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
 
     public void showPopup(View v, Schedule s){
         final Schedule schedule = s;
-        TextView txtclose;
         Button yes_btn;
         Button no_btn;
         myDialog.setContentView(R.layout.delete_popup);
@@ -50,6 +50,7 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
 
             }
         });
+
         no_btn.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,16 +74,29 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
         final TextView to = myListViewItem.findViewById(R.id.to);
         final TextView muscle = myListViewItem.findViewById(R.id.muscle);
 
-
         final Button delete_btn = myListViewItem.findViewById(R.id.delete_btn);
+        final Button edit_btn = myListViewItem.findViewById(R.id.edit_btn);
 
         final Schedule mySchedule = myScheduleList.get(position);
-
 
         day.setText(mySchedule.getDay());
         from.setText(mySchedule.getFrom());
         to.setText(mySchedule.getTo());
         muscle.setText(mySchedule.getMuscle());
+
+
+        edit_btn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, AddTimeActivity.class);
+                //if you want to send data to called activity uncomment next line
+                // intent.putExtra("extra", "value");
+
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+            }
+        });
+
 
         delete_btn.setOnClickListener(new Button.OnClickListener() {
             @Override

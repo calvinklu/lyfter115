@@ -21,6 +21,8 @@
 
     <string name="no_workout">NO WORKOUTS AVAILABLE</string>
 
+    <string name="clear">Clear</string>
+
     <string name="edit_schedule">Edit Schedule</string>
 
     <string name="no_schedule">NO SCHEDULES AVAILABLE</string>
