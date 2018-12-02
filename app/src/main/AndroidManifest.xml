@@ -24,7 +24,8 @@
 
         <activity
             android:name=".MySchedule"
-            android:label="@string/edit_schedule"></activity>
+            android:label="@string/edit_schedule"
+            android:launchMode="singleTop"></activity>
 
         <activity
             android:name=".AddTimeActivity"
@@ -42,6 +43,35 @@
         <activity
             android:name=".LoginActivity"
             android:label="Login"></activity>
+
+        <activity android:name=".UpperBody" />
+
+        <activity
+            android:name=".UpperPop"
+            android:theme="@style/AppTheme.PopupTheme" />
+
+        <activity android:name=".LowerBody" />
+
+        <activity
+            android:name=".LowerPop"
+            android:theme="@style/AppTheme.PopupTheme" />
+
+        <activity android:name=".Cardio" />
+
+        <activity
+            android:name=".CardioPop"
+            android:theme="@style/AppTheme.PopupTheme" />
+
+        <activity
+            android:name=".BackCorePop"
+            android:theme="@style/AppTheme.PopupTheme" />
+
+        <activity android:name=".BackCore">
+
+        </activity>
+
+        <service android:name=".BackgroundService"
+            android:exported="false"/>
 
     </application>
 

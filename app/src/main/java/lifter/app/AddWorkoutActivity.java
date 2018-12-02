@@ -84,13 +84,18 @@ public class AddWorkoutActivity extends AppCompatActivity {
                 String fromTime = extras.getString("fromTime");
                 String toTime = extras.getString("toTime");
                 int fromHours = extras.getInt("fromHours");
+                int fromMinute = extras.getInt("fromMinute");
                 int toHour = extras.getInt("toHour");
+                int toMinute = extras.getInt("toMinute");
+
                 Bundle backed = new Bundle();
                 backed.putString("day", day);
                 backed.putString("fromTime", fromTime);
                 backed.putString("toTime", toTime);
                 backed.putInt("fromHours", fromHours);
+                backed.putInt("fromMinute", fromMinute);
                 backed.putInt("toHour", toHour);
+                backed.putInt("toMinute", toMinute);
                 backed.putString("etMuscle", etMuscle);
 
                 Intent j = new Intent(AddWorkoutActivity.this, AddTimeActivity.class);
@@ -164,10 +169,19 @@ public class AddWorkoutActivity extends AppCompatActivity {
             String day = extras.getString("day");
             String fromTime = extras.getString("fromTime");
             String toTime = extras.getString("toTime");
+            int fromHours = extras.getInt("fromHours");
+            int fromMinute = extras.getInt("fromMinute");
 
+            String fromHourString = Integer.toString(fromHours);
+            String fromMinuteString = Integer.toString(fromMinute);
+            if(fromHours < 10){
+                fromHourString = "0" + Integer.toString(fromHours);
+            }
+
+            String fromSpecific = fromHourString + ":" + fromMinuteString;
 
             // Reflects in Schedule java file (the scheduling object)
-            Schedule schedule = new Schedule(id, email_content, day, fromTime, toTime, etMuscle);
+            Schedule schedule = new Schedule(id, email_content, day, fromTime, toTime, etMuscle, fromSpecific);
             ref.child(id).setValue(schedule);
 
             Intent j = new Intent(AddWorkoutActivity.this, Sidebar.class);

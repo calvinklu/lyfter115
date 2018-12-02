@@ -145,8 +145,29 @@ public class Sidebar extends AppCompatActivity
             startActivity(i);
         }
 
+        else if (id == R.id.Upperbody){
+            Intent i = new Intent(this, UpperBody.class);
+            startActivity(i);
+        }
+
+        else if (id == R.id.Lowerbody){
+            Intent i = new Intent(this, LowerBody.class);
+            startActivity(i);
+        }
+
+        else if (id == R.id.backcore){
+            Intent i = new Intent(this, BackCore.class);
+            startActivity(i);
+        }
+
+        else if (id == R.id.cardio){
+            Intent i = new Intent(this, Cardio.class);
+            startActivity(i);
+        }
+
         else if (id == R.id.logout) {
             FirebaseAuth auth = FirebaseAuth.getInstance();
+            stopService(getCurrentFocus());
             auth.signOut();
 
             sharedpreferences=getApplicationContext().getSharedPreferences("Preferences", 0);
@@ -159,5 +180,11 @@ public class Sidebar extends AppCompatActivity
         }
 
         return true;
+    }
+
+
+    public void stopService(View view){
+        Intent i = new Intent(this, BackgroundService.class);
+        stopService(i);
     }
 }

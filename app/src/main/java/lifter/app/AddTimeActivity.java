@@ -70,10 +70,17 @@ public class AddTimeActivity extends AppCompatActivity {
             etMuscle = backed.getString("etMuscle");
             edit = backed.getBoolean("edit");
             int from = backed.getInt("fromHours");
+            int from_min = backed.getInt("fromMinute");
+
             int to = backed.getInt("toHour");
             editted_id = backed.getString("id");
+            int to_min = backed.getInt("toMinute");
+
             fromHours = from;
+            fromMinute = from_min;
+
             toHour = to;
+            toMinute = to_min;
 
             setSpinText(day, etDay);
             fromBtn.setText(fromTime);
@@ -228,8 +235,11 @@ public class AddTimeActivity extends AppCompatActivity {
                             extras.putString("toTime", toTime);
                             extras.putString("etMuscle", etMuscle);
                             extras.putInt("fromHours", fromHours);
+                            extras.putInt("fromMinute", fromMinute);
                             extras.putInt("toHour", toHour);
                             extras.putBoolean("edit", edit);
+                            extras.putInt("toMinute", toMinute);
+
                             i.putExtras(extras);
                             startActivity(i);
                         }

@@ -119,6 +119,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                             Snackbar.make(title, "Login Successful", Snackbar.LENGTH_LONG).show();
                             Log.d(TAG, "Success!");
 
+                            startService(getCurrentFocus());
+
                             sharedpreferences=getApplicationContext().getSharedPreferences("Preferences", 0);
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString("LOGIN", email);
@@ -136,4 +138,9 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                 });
     }
 
+
+    public void startService(View view){
+        Intent i = new Intent(this, BackgroundService.class);
+        startService(i);
+    }
 }

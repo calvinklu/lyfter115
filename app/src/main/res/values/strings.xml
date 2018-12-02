@@ -40,4 +40,49 @@
     <string name="title_activity_sidebar">Lifter</string>
 
 
+
+    <string-array name="upperexercises">
+        <item>Barbell/Dumbell Bench Press(Chest)</item>
+        <item>Dumbbell Flyes (Chest)</item>
+        <item>Barbell/Dumbell Overhead Press(Shoulders)</item>
+        <item>Dumbbell Front/Lateral Flyes(Shoulders)</item>
+        <item>Bicep Curls</item>
+        <item>Preacher Curls with barbell/dumbbells(Biceps)</item>
+        <item>Dips(Triceps)</item>
+        <item>Skullcrusher(Triceps)</item>
+        <item>Pushdowns with Rope/Barbell(Tricep)</item>
+    </string-array>
+
+
+
+
+    <string-array name="lowerexercises">
+        <item>Squats and Split Squats(flat/elevated)</item>
+        <item>Deadlifts</item>
+        <item>Single Leg Squats(Quads)</item>
+        <item>Wall Sits(Quads)</item>
+        <item>Single Leg Kettlebell Deadlift(Hamstrings)</item>
+        <item>Glute Bridge(Hamstring)</item>
+        <item>Calf Raises</item>
+        <item>Jump Rope(Calves)</item>
+    </string-array>
+
+
+    <string-array name="backcore">
+        <item>Pull-Ups(Back)</item>
+        <item>Cable Row(Back)</item>
+        <item>Pull-Downs(Back)</item>
+        <item>Crunches(Core)</item>
+        <item>Panks(Core)</item>>
+        <item>Toes to Bar(Core)</item>
+    </string-array>
+
+    <string-array name="cardio">
+        <item>Short Distance Sprinting</item>
+        <item>Long Distance Running</item>
+        <item>Cycling</item>
+        <item>Elliptical</item>
+        <item>Swimming</item>
+    </string-array>
+
 </resources>
