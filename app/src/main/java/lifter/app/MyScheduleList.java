@@ -120,6 +120,8 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
                 editted.putString("fromTime", mySchedule.getFrom());
                 editted.putString("toTime", mySchedule.getTo());
                 editted.putString("etMuscle", mySchedule.getMuscle());
+                editted.putBoolean("edit", true);
+                editted.putString("id", mySchedule.getId());
                 j.putExtras(editted);
 
                 j.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

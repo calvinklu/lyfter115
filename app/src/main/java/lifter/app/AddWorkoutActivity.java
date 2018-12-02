@@ -35,6 +35,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
     FirebaseUser u;
 
     String etMuscle = "";
+    Boolean edit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
             Bundle backed = j.getExtras();
 
             etMuscle = backed.getString("etMuscle");
-
+            edit = backed.getBoolean("edit");
             if (!etMuscle.equals("")) {
                 setSpinText(muscle, etMuscle);
             }
@@ -84,7 +85,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
                 String toTime = extras.getString("toTime");
                 int fromHours = extras.getInt("fromHours");
                 int toHour = extras.getInt("toHour");
-
                 Bundle backed = new Bundle();
                 backed.putString("day", day);
                 backed.putString("fromTime", fromTime);
@@ -101,9 +101,16 @@ public class AddWorkoutActivity extends AppCompatActivity {
 
 
         add.setOnClickListener(new View.OnClickListener(){
+
             @Override
             public void onClick(View v){
-                addWorkout(ref);
+                if(edit){
+                    editWorkout(ref);
+                }
+                else{
+                    addWorkout(ref);
+                }
+
             }
         });
     }
@@ -117,6 +124,30 @@ public class AddWorkoutActivity extends AppCompatActivity {
         }
     }
 
+    private void editWorkout(DatabaseReference ref){
+        if(!TextUtils.isEmpty(etMuscle)
+                && !etMuscle.equals("")){
+            Intent i  = getIntent();
+            Bundle extras = i.getExtras();
+            String id = extras.getString("id");
+            String email_content = extras.getString("email_content");
+            String day = extras.getString("day");
+            String fromTime = extras.getString("fromTime");
+            String toTime = extras.getString("toTime");
+            String etMuscle = muscle.getSelectedItem().toString();
+
+            ref.child(id).child("from").setValue(fromTime);
+            ref.child(id).child("to").setValue(toTime);
+            ref.child(id).child("muscle").setValue(etMuscle);
+
+
+            Intent j = new Intent(AddWorkoutActivity.this, Sidebar.class);
+            startActivity(j);
+        }
+        else{
+            Toast.makeText(this, "You have not selected a muscle", Toast.LENGTH_LONG).show();
+        }
+    }
 
     private void addWorkout(DatabaseReference ref) {
 

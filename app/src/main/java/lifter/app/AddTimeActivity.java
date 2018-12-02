@@ -33,13 +33,17 @@ public class AddTimeActivity extends AppCompatActivity {
     Spinner day;
     ProgressBar progress;
 
+
+//
+    String editted_id;
+
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser u = auth.getCurrentUser();
 
     int fromHours, fromMinute, toHour, toMinute;
     String user_email = u.getEmail();
     String etMuscle = "";
-
+    boolean edit = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,10 +68,10 @@ public class AddTimeActivity extends AppCompatActivity {
             String fromTime = backed.getString("fromTime");
             String toTime = backed.getString("toTime");
             etMuscle = backed.getString("etMuscle");
-
+            edit = backed.getBoolean("edit");
             int from = backed.getInt("fromHours");
             int to = backed.getInt("toHour");
-
+            editted_id = backed.getString("id");
             fromHours = from;
             toHour = to;
 
@@ -128,6 +132,8 @@ public class AddTimeActivity extends AppCompatActivity {
 
                // returned = false;
                 //gets data snapshot of all the workout times that the user has
+
+
                 ref.orderByChild("email").equalTo(user_email).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -145,10 +151,10 @@ public class AddTimeActivity extends AppCompatActivity {
 
                         //checks to see if the times for the start and finish times are AM or PM
                         // if it is PM add 12 to the hours to make it military time
-                        if(fromTime.substring(fromTime.length()-2).equals("PM")){
+                        if (fromTime.substring(fromTime.length() - 2).equals("PM")) {
                             new_ftime = add_twelve(new_ftime);
                         }
-                        if(toTime.substring(toTime.length()-2).equals("PM")){
+                        if (toTime.substring(toTime.length() - 2).equals("PM")) {
                             new_ttime = add_twelve(new_ttime);
                         }
 
@@ -160,7 +166,7 @@ public class AddTimeActivity extends AppCompatActivity {
                                 from = datas.child("from").getValue().toString();
                                 to = datas.child("to").getValue().toString();
 
-                                String old_workout_start =  from.substring(from.length() - 2);
+                                String old_workout_start = from.substring(from.length() - 2);
                                 String old_workout_finish = to.substring(to.length() - 2);
 
 
@@ -171,10 +177,10 @@ public class AddTimeActivity extends AppCompatActivity {
 
                                 //checks if the iterated workout is AM or PM
                                 // if PM add 12 to it
-                                if(from.substring(from.length()-2).equals("PM")){
+                                if (from.substring(from.length() - 2).equals("PM")) {
                                     old_ftime = add_twelve(old_ftime);
                                 }
-                                if(to.substring(to.length()-2).equals("PM")){
+                                if (to.substring(to.length() - 2).equals("PM")) {
                                     old_ttime = add_twelve(old_ttime);
                                 }
                                 //checks for the case if the workout times is also AM or PM and same the start and finish time
@@ -182,8 +188,7 @@ public class AddTimeActivity extends AppCompatActivity {
                                         && (new_ftime == old_ftime) && (new_ttime == old_ttime)) {
                                     conflict = true;
                                     break;
-                                }
-                                else {
+                                } else {
                                     //check to see if the new workout can be before or after the iterated workout
                                     if ((new_ftime <= old_ftime && new_ttime <= old_ftime)) {
                                         before_ok = true;
@@ -205,6 +210,8 @@ public class AddTimeActivity extends AppCompatActivity {
                             }
                         }
 
+
+
                         if (conflict) {
                             message("Your new workout overlaps with one of the current workouts " + from + " to " + to);
                             message("Please choose another schedule.");
@@ -222,7 +229,7 @@ public class AddTimeActivity extends AppCompatActivity {
                             extras.putString("etMuscle", etMuscle);
                             extras.putInt("fromHours", fromHours);
                             extras.putInt("toHour", toHour);
-
+                            extras.putBoolean("edit", edit);
                             i.putExtras(extras);
                             startActivity(i);
                         }
@@ -236,12 +243,31 @@ public class AddTimeActivity extends AppCompatActivity {
 
                 });
             }
+            else if(edit){  //if the current workout we are looking at right now is being edited
+
+                Intent i = new Intent(AddTimeActivity.this, AddWorkoutActivity.class);
+
+                extras.putString("id", editted_id);
+                extras.putString("email_content", email_content);
+                extras.putString("day", etDay);
+                extras.putString("fromTime", fromTime);
+                extras.putString("toTime", toTime);
+                extras.putString("etMuscle", etMuscle);
+                extras.putInt("fromHours", fromHours);
+                extras.putInt("toHour", toHour);
+                extras.putBoolean("edit", true);
+
+                i.putExtras(extras);
+                startActivity(i);
+            }
             else
                 Toast.makeText(this, "You have not filled a correct time slot", Toast.LENGTH_LONG).show();
         }
         else
             Toast.makeText(this, "You have not filled out a required field", Toast.LENGTH_LONG).show();
     }
+
+
 
 
     public void message(String msg){
