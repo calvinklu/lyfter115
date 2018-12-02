@@ -115,6 +115,30 @@ public class MySchedule extends AppCompatActivity{
     };
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_back:
+                /*the R.id.action_favorite is the ID of our button (defined in strings.xml).
+                Change Activity here (if that's what you're intending to do, which is probably is).
+                 */
+                Intent i = new Intent(this, Sidebar.class);
+                startActivity(i);
+                break;
+
+            case R.id.action_clear:
+                LayoutInflater inflater = (LayoutInflater)
+                        getSystemService(LAYOUT_INFLATER_SERVICE);
+                View v = inflater.inflate(R.layout.clear_popup, null);
+                showPopup(v);
+
+            default:
+                super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+
     public void showPopup(View v){
         Button yes_btn, no_btn;
         myDialog.setContentView(R.layout.clear_popup);
@@ -138,33 +162,6 @@ public class MySchedule extends AppCompatActivity{
         myDialog.show();
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_back:
-                /*the R.id.action_favorite is the ID of our button (defined in strings.xml).
-                Change Activity here (if that's what you're intending to do, which is probably is).
-                 */
-                Intent i = new Intent(this, Sidebar.class);
-                startActivity(i);
-                break;
-
-            case R.id.action_clear:
-
-                LayoutInflater inflater = (LayoutInflater)
-                        getSystemService(LAYOUT_INFLATER_SERVICE);
-                View v = inflater.inflate(R.layout.clear_popup, null);
-                showPopup(v);
-
-
-
-
-            default:
-                super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
 
     void clearSchedule(){
         DatabaseReference root = FirebaseDatabase.getInstance().getReference();

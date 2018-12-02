@@ -17,6 +17,9 @@ import android.widget.TextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 public class MyScheduleList extends ArrayAdapter<Schedule> {
@@ -30,10 +33,31 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
 
     public MyScheduleList(Activity context, List<Schedule> myScheduleList){
         super(context, R.layout.activity_schedule_list, myScheduleList);
+        final String [] days =  {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        HashMap filler = new HashMap(7);
+        final HashMap days_hash = fillHash(filler, days);
+        Collections.sort(myScheduleList, new Comparator<Schedule>() {
+            @Override
+            public int compare(Schedule schedule, Schedule t1) {
+                String hashed_x = days_hash.get(schedule.getDay()).toString();
+                String hashed_y = days_hash.get(t1.getDay()).toString();
+                return hashed_x.compareTo(hashed_y);
+            }
+        });
         this.context = context;
         this.myScheduleList = myScheduleList;
         myDialog = new Dialog(context);
     }
+
+
+    public HashMap fillHash(HashMap days, String[] d){
+        int ascii_a = 66;
+        for(int i=0; i<7 ; i++){
+            days.put(d[i], (char)(ascii_a+i));
+        }
+        return days;
+    }
+
 
     public void showPopup(View v, Schedule s){
         final Schedule schedule = s;
@@ -59,6 +83,7 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
         }));
         myDialog.show();
     }
+
 
     @NonNull
     @Override
@@ -88,12 +113,17 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
         edit_btn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, AddTimeActivity.class);
-                //if you want to send data to called activity uncomment next line
-                // intent.putExtra("extra", "value");
+                Intent j = new Intent(context, AddTimeActivity.class);
 
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(i);
+                Bundle editted = new Bundle();
+                editted.putString("day", mySchedule.getDay());
+                editted.putString("fromTime", mySchedule.getFrom());
+                editted.putString("toTime", mySchedule.getTo());
+                editted.putString("etMuscle", mySchedule.getMuscle());
+                j.putExtras(editted);
+
+                j.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(j);
             }
         });
 
@@ -102,23 +132,12 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
             @Override
             public void onClick(View v) {
                 showPopup(v,mySchedule);
-                    /*Schedule s = new Schedule(mySchedule.getId(),
-                            mySchedule.getEmail(),
-                            day.getText().toString(),
-                            from.getText().toString(),
-                            to.getText().toString(),
-                            muscle.getText().toString());
-
-                    /*schedule = s;
-                    remove(mySchedule);
-                    notifyDataSetChanged();
-                    ref.child(schedule.getId()).removeValue();*/
-                //deleteSchedule(mySchedule);
             }
         });
         return myListViewItem;
 
     }
+
 
     private void deleteSchedule(Schedule schedule) {
         ref.child(schedule.getId()).removeValue();

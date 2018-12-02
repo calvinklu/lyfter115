@@ -74,6 +74,8 @@ public class AddTimeActivity extends AppCompatActivity {
             setSpinText(day, etDay);
             fromBtn.setText(fromTime);
             toBtn.setText(toTime);
+
+            Log.d("TAG", etMuscle);
         }
 
         exit.setOnClickListener(new Button.OnClickListener() {
@@ -203,7 +205,7 @@ public class AddTimeActivity extends AppCompatActivity {
                             }
                         }
 
-                        if (conflict == true) {
+                        if (conflict) {
                             message("Your new workout overlaps with one of the current workouts " + from + " to " + to);
                             message("Please choose another schedule.");
                         }
@@ -227,7 +229,6 @@ public class AddTimeActivity extends AppCompatActivity {
 
                     }
 
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
@@ -240,10 +241,7 @@ public class AddTimeActivity extends AppCompatActivity {
         }
         else
             Toast.makeText(this, "You have not filled out a required field", Toast.LENGTH_LONG).show();
-
-
     }
-
 
 
     public void message(String msg){
