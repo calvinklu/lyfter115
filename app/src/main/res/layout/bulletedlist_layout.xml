@@ -7,8 +7,6 @@
         android:id="@+id/exercise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/bullet"
-        android:layout_alignLeft="@+id/bullet"
         android:layout_alignParentTop="true"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
@@ -16,17 +14,5 @@
         android:text="TextView"
         android:textColor="@color/cast_expanded_controller_background_color"
         android:textSize="20sp" />
-
-    <ImageView
-        android:id="@+id/bullet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="35dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="50dp"
-        app:srcCompat="@drawable/cast_expanded_controller_seekbar_thumb" />
 
 </RelativeLayout>

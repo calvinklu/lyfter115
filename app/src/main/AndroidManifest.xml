@@ -41,17 +41,22 @@
         <activity
             android:name=".UpperPop"
             android:theme="@style/AppTheme.PopupTheme" />
+
         <activity android:name=".LowerBody" />
         <activity
             android:name=".LowerPop"
             android:theme="@style/AppTheme.PopupTheme" />
+
         <activity android:name=".Cardio" />
+
         <activity
             android:name=".CardioPop"
             android:theme="@style/AppTheme.PopupTheme" />
+
         <activity
             android:name=".BackCorePop"
             android:theme="@style/AppTheme.PopupTheme" />
+
         <activity android:name=".BackCore">
         </activity>
     </application>
