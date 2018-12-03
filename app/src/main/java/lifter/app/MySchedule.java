@@ -164,15 +164,42 @@ public class MySchedule extends AppCompatActivity{
 
 
     void clearSchedule(){
-        DatabaseReference root = FirebaseDatabase.getInstance().getReference();
-        root.setValue(null);
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("schedule");
+//        ref.child(u.getEmail()).removeValue();
 
         Query my_query = FirebaseDatabase.getInstance().getReference("schedule")
                 .orderByChild("email")
                 .equalTo(u.getEmail());
 
-        my_query.addListenerForSingleValueEvent(my_listener);
+        my_query.addListenerForSingleValueEvent(my_clear_listener);
         ListViewSchedule = (ListView) findViewById(R.id.ListViewSchedule);
         myScheduleList = new ArrayList<>();
     }
+
+
+    ValueEventListener my_clear_listener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            myScheduleList.clear();
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("schedule");
+
+            for (DataSnapshot scheduleSnapshot : dataSnapshot.getChildren()) {
+                Schedule schedule = scheduleSnapshot.getValue(Schedule.class);
+                ref.child(schedule.getId()).removeValue();
+                myScheduleList.remove(schedule);
+            }
+            Collections.sort(myScheduleList, new Comparator<Schedule>() {
+                @Override
+                public int compare(Schedule schedule, Schedule t1) {
+                    return schedule.getDay().compareTo(t1.getDay());
+                }
+            });
+            MyScheduleList myAdapter = new MyScheduleList(MySchedule.this, myScheduleList);
+            ListViewSchedule.setAdapter(myAdapter);
+        }
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
 }
