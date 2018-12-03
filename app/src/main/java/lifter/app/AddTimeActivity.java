@@ -33,8 +33,6 @@ public class AddTimeActivity extends AppCompatActivity {
     Spinner day;
     ProgressBar progress;
 
-
-//
     String editted_id;
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
