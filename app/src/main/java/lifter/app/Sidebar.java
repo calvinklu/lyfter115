@@ -57,6 +57,8 @@ public class Sidebar extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sidebar);
 
+        startService(getCurrentFocus());
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -106,6 +108,11 @@ public class Sidebar extends AppCompatActivity
         email.setText(u.getEmail());
     }
 
+
+    public void startService(View view){
+        Intent i = new Intent(this, BackgroundService.class);
+        startService(i);
+    }
 
 
     ValueEventListener listener = new ValueEventListener() {
