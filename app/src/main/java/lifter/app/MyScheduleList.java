@@ -116,10 +116,12 @@ public class MyScheduleList extends ArrayAdapter<Schedule> {
                 Intent j = new Intent(context, AddTimeActivity.class);
 
                 Bundle editted = new Bundle();
+
                 editted.putString("day", mySchedule.getDay());
                 editted.putString("fromTime", mySchedule.getFrom());
                 editted.putString("toTime", mySchedule.getTo());
                 editted.putString("etMuscle", mySchedule.getMuscle());
+                editted.putString("getFromSpecific", mySchedule.getFromSpecific());
                 editted.putBoolean("edit", true);
                 editted.putString("id", mySchedule.getId());
 

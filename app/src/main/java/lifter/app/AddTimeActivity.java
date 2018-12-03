@@ -231,9 +231,8 @@ public class AddTimeActivity extends AppCompatActivity {
                             extras.putInt("fromMinute", fromMinute);
                             extras.putInt("toHour", toHour);
                             extras.putInt("toMinute", toMinute);
-
                             extras.putBoolean("edit", edit);
-                            extras.putInt("toMinute", toMinute);
+
 
                             i.putExtras(extras);
                             startActivity(i);
@@ -259,7 +258,9 @@ public class AddTimeActivity extends AppCompatActivity {
                 extras.putString("toTime", toTime);
                 extras.putString("etMuscle", etMuscle);
                 extras.putInt("fromHours", fromHours);
+                extras.putInt("fromMinute", fromMinute);
                 extras.putInt("toHour", toHour);
+                extras.putInt("toMinute", toMinute);
                 extras.putBoolean("edit", true);
 
                 //check if its a valid time

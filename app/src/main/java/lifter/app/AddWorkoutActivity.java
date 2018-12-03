@@ -142,11 +142,26 @@ public class AddWorkoutActivity extends AppCompatActivity {
             String fromTime = extras.getString("fromTime");
             String toTime = extras.getString("toTime");
             String etMuscle = muscle.getSelectedItem().toString();
+            int fromHours = extras.getInt("fromHours");
+            int fromMinute = extras.getInt("fromMinute");
+            String fromHourString = Integer.toString(fromHours);
+            String fromMinuteString = Integer.toString(fromMinute);
+            if(fromMinute<10){
+                fromMinuteString = "0" + Integer.toString(fromMinute);
+            }
+            if(fromHours < 10){
+                fromHourString = "0" + Integer.toString(fromHours);
+            }
+
+            String fromSpecific = fromHourString + ":" + fromMinuteString;
+
+
 
             ref.child(id).child("from").setValue(fromTime);
             ref.child(id).child("to").setValue(toTime);
             ref.child(id).child("muscle").setValue(etMuscle);
-
+            ref.child(id).child("day").setValue(day);
+            ref.child(id).child("fromSpecific").setValue(fromSpecific); //change format to 24 hr time
 
             Intent j = new Intent(AddWorkoutActivity.this, Sidebar.class);
             startActivity(j);
@@ -176,6 +191,9 @@ public class AddWorkoutActivity extends AppCompatActivity {
 
             String fromHourString = Integer.toString(fromHours);
             String fromMinuteString = Integer.toString(fromMinute);
+            if(fromMinute<10){
+                fromMinuteString = "0" + Integer.toString(fromMinute);
+            }
             if(fromHours < 10){
                 fromHourString = "0" + Integer.toString(fromHours);
             }
