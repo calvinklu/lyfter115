@@ -31,7 +31,9 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 public class BackgroundService extends Service{
@@ -130,30 +132,38 @@ public class BackgroundService extends Service{
         //String[] workoutDates = {"Monday-13:00", "Wednesday-14:30", "Friday-13:45"};
         //Convert workoutDates into alarmDates
 
-        String[] alarmDates = new String[workoutDates.length];
-        timeConv(workoutDates, alarmDates);
+        HashMap<String, String> alarmDatesDict = new HashMap<String, String>();
 
-        for(int i = 0; i < alarmDates.length; i++){
-            if(currentDate.equals(alarmDates[i])){
+        //String[] alarmDates = new String[workoutDates.length];
+        timeConv(workoutDates, alarmDatesDict);
+
+        //for(int i = 0; i <= alarmDates.length; i++){
+
+            // Fix here
+            if(currentDate.equals(alarmDatesDict.get(currentDate))){
                 String[] dayTime;
-                dayTime = alarmDates[i].split("-");
+                dayTime = alarmDatesDict.get(currentDate).split("-");
 
                 //Convert to AM/PM time
                 SimpleDateFormat twelveHourTime = new SimpleDateFormat("hh:mm a");
-                try {
-                    String convertTime = dayTime[1];
-                    Date convTwelve = twelveHourTime.parse(convertTime);
-                    String alarmTime = twelveHourTime.format(convTwelve);
-                    sendNotification(alarmTime);
-                } catch(Exception e){
-                    e.printStackTrace();
-                }
+
+                sendNotification(dayTime[1]);
+
+//                try {
+//                    String convertTime = dayTime[1];
+//                    Date convTwelve = twelveHourTime.parse(convertTime);
+//                    String alarmTime = twelveHourTime.format(convTwelve);
+//                    sendNotification(alarmTime);
+//                }
+//
+//                catch(Exception e){
+//                    e.printStackTrace();
+//                }
             }
         }
-    }
 
 
-    public static void timeConv(String[] workoutDates, String[] alarmDates){
+    public static void timeConv(String[] workoutDates, HashMap<String, String> alarmDatesDict){
 
         for(int i = 0; i < workoutDates.length; i++){
             Calendar cal = Calendar.getInstance();
@@ -170,8 +180,9 @@ public class BackgroundService extends Service{
 
             cal.add(Calendar.MINUTE, -30);
             Date halfHourBack = cal.getTime();
+
             String alarmDate = sdf.format(halfHourBack);
-            alarmDates[i] = alarmDate;
+            alarmDatesDict.put(alarmDate, alarmDate);
         }
     }
     //----------------------------------------
