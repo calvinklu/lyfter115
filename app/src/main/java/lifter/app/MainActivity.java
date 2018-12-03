@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             // code if user is logged. For example, go to another activity
             Intent i = new Intent(MainActivity.this, Sidebar.class);
             startActivity(i);
-            startService(getCurrentFocus());
+//            startService(getCurrentFocus());
         }
 
         else {
@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void startService(View view){
-        Intent i = new Intent(this, BackgroundService.class);
-        startService(i);
-    }
+//    public void startService(View view){
+//        Intent i = new Intent();
+//        startService(i);
+//    }
 }
 

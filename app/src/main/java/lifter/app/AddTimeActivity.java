@@ -33,8 +33,6 @@ public class AddTimeActivity extends AppCompatActivity {
     Spinner day;
     ProgressBar progress;
 
-
-//
     String editted_id;
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -69,11 +67,10 @@ public class AddTimeActivity extends AppCompatActivity {
             String toTime = backed.getString("toTime");
             etMuscle = backed.getString("etMuscle");
             edit = backed.getBoolean("edit");
+            editted_id = backed.getString("id");
             int from = backed.getInt("fromHours");
             int from_min = backed.getInt("fromMinute");
-
             int to = backed.getInt("toHour");
-            editted_id = backed.getString("id");
             int to_min = backed.getInt("toMinute");
 
             fromHours = from;
@@ -135,11 +132,7 @@ public class AddTimeActivity extends AppCompatActivity {
 
             // toHour must be greater than fromHour
             // reserved range of time must be at least an hour
-            if(fromHours < toHour && (toHour - fromHours >= 1)){
-
-               // returned = false;
-                //gets data snapshot of all the workout times that the user has
-
+            if(fromHours < toHour && (toHour - fromHours >= 1) && !edit){
 
                 ref.orderByChild("email").equalTo(user_email).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -223,7 +216,7 @@ public class AddTimeActivity extends AppCompatActivity {
                             message("Your new workout overlaps with one of the current workouts " + from + " to " + to);
                             message("Please choose another schedule.");
                         }
-                        else{
+                        else{   //if the workout time is not overlapping any previous ones then add it the new workout to firebase
                             String id = reference.push().getKey();
 
                             Intent i = new Intent(AddTimeActivity.this, AddWorkoutActivity.class);
@@ -237,6 +230,8 @@ public class AddTimeActivity extends AppCompatActivity {
                             extras.putInt("fromHours", fromHours);
                             extras.putInt("fromMinute", fromMinute);
                             extras.putInt("toHour", toHour);
+                            extras.putInt("toMinute", toMinute);
+
                             extras.putBoolean("edit", edit);
                             extras.putInt("toMinute", toMinute);
 
@@ -267,8 +262,23 @@ public class AddTimeActivity extends AppCompatActivity {
                 extras.putInt("toHour", toHour);
                 extras.putBoolean("edit", true);
 
-                i.putExtras(extras);
-                startActivity(i);
+                //check if its a valid time
+                int edit_from_hour = Integer.parseInt(fromTime.replaceAll("[^\\d.]", ""));
+                int edit_to_hour = Integer.parseInt(toTime.replaceAll("[^\\d.]", ""));
+                if(fromTime.substring(fromTime.length()-2).equals("PM")){
+                    edit_from_hour = add_twelve(edit_from_hour);
+                }
+                if(toTime.substring(toTime.length()-2).equals("PM")){
+                    edit_to_hour = add_twelve(edit_to_hour);
+                }
+
+                if(edit_from_hour <= edit_to_hour && (edit_to_hour - edit_from_hour >= 100)){
+                    i.putExtras(extras);
+                    startActivity(i);
+                }
+                else {
+                    message("You have not filled out a correct time slot");
+                }
             }
             else
                 Toast.makeText(this, "You have not filled a correct time slot", Toast.LENGTH_LONG).show();
@@ -276,8 +286,6 @@ public class AddTimeActivity extends AppCompatActivity {
         else
             Toast.makeText(this, "You have not filled out a required field", Toast.LENGTH_LONG).show();
     }
-
-
 
 
     public void message(String msg){

@@ -83,6 +83,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
                 String day = extras.getString("day");
                 String fromTime = extras.getString("fromTime");
                 String toTime = extras.getString("toTime");
+
                 int fromHours = extras.getInt("fromHours");
                 int fromMinute = extras.getInt("fromMinute");
                 int toHour = extras.getInt("toHour");
@@ -97,6 +98,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
                 backed.putInt("toHour", toHour);
                 backed.putInt("toMinute", toMinute);
                 backed.putString("etMuscle", etMuscle);
+                backed.putBoolean("edit", edit);
 
                 Intent j = new Intent(AddWorkoutActivity.this, AddTimeActivity.class);
                 j.putExtras(backed);
