@@ -103,7 +103,6 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     }
 
 
-
     private void loginProcess(final String email, String password) {
 
         mAuth.signInWithEmailAndPassword(email, password)

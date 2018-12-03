@@ -37,7 +37,10 @@ public class BackgroundService extends Service{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
         Toast.makeText(this, "Alarm service started...", Toast.LENGTH_LONG).show();
+
+
         workoutTimeCheck();
+
         return START_STICKY;
     }
     @Override
@@ -49,7 +52,7 @@ public class BackgroundService extends Service{
     //----------------------------------------
     public void workoutTimeCheck(){
         user = auth.getCurrentUser();
-        ref = FirebaseDatabase.getInstance().getReference().child(user.getUid());
+        ref = FirebaseDatabase.getInstance().getReference("schedule").child(user.getUid());
         final List<String> dayTimes = new ArrayList<String>();
         final List<String> fromTimes = new ArrayList<String>();
         ref.addValueEventListener(new ValueEventListener() {
@@ -57,15 +60,15 @@ public class BackgroundService extends Service{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 DataSnapshot daySnap = dataSnapshot.child("day");
                 Iterable<DataSnapshot> dayChildren = daySnap.getChildren();
-                DataSnapshot fromSnap = dataSnapshot.child("from");
+                DataSnapshot fromSnap = dataSnapshot.child("fromSpecific");
                 Iterable<DataSnapshot> fromChildren = fromSnap.getChildren();
                 for(DataSnapshot day : dayChildren){
                     String workoutDay = dataSnapshot.child("day").getValue().toString();
                     dayTimes.add(workoutDay);
                 }
                 for(DataSnapshot from : fromChildren){
-                    String workoutFrom = dataSnapshot.child("from").getValue().toString();
-                    dayTimes.add(workoutFrom);
+                    String workoutFrom = dataSnapshot.child("fromSpecific").getValue().toString();
+                    fromTimes.add(workoutFrom);
                 }
             }
             @Override

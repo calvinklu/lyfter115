@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
             // code if user is logged. For example, go to another activity
             Intent i = new Intent(MainActivity.this, Sidebar.class);
             startActivity(i);
-//            startService(getCurrentFocus());
         }
 
         else {
