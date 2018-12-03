@@ -173,8 +173,6 @@ public class MySchedule extends AppCompatActivity{
 
         my_query.addListenerForSingleValueEvent(my_clear_listener);
         myScheduleList = new ArrayList<>();
-        Intent j = new Intent(MySchedule.this, Sidebar.class);
-        startActivity(j);
     }
 
 
