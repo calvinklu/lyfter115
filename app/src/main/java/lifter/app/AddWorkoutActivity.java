@@ -37,6 +37,7 @@ public class AddWorkoutActivity extends AppCompatActivity {
     String etMuscle = "";
     Boolean edit = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +100,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
                 backed.putInt("toMinute", toMinute);
                 backed.putString("etMuscle", etMuscle);
                 backed.putBoolean("edit", edit);
-
                 Intent j = new Intent(AddWorkoutActivity.this, AddTimeActivity.class);
                 j.putExtras(backed);
                 startActivity(j);
@@ -134,6 +134,9 @@ public class AddWorkoutActivity extends AppCompatActivity {
     private void editWorkout(DatabaseReference ref){
         if(!TextUtils.isEmpty(etMuscle)
                 && !etMuscle.equals("")){
+            String fromHourString;
+            String fromMinuteString;
+            String fromSpecific;
             Intent i  = getIntent();
             Bundle extras = i.getExtras();
             String id = extras.getString("id");
@@ -142,19 +145,23 @@ public class AddWorkoutActivity extends AppCompatActivity {
             String fromTime = extras.getString("fromTime");
             String toTime = extras.getString("toTime");
             String etMuscle = muscle.getSelectedItem().toString();
-            int fromHours = extras.getInt("fromHours");
-            int fromMinute = extras.getInt("fromMinute");
-            String fromHourString = Integer.toString(fromHours);
-            String fromMinuteString = Integer.toString(fromMinute);
-            if(fromMinute<10){
-                fromMinuteString = "0" + Integer.toString(fromMinute);
+            String old_time = extras.getString("old_time");
+            if (old_time.equals(fromTime)) {
+                fromSpecific = extras.getString("fromSpecific");
             }
-            if(fromHours < 10){
-                fromHourString = "0" + Integer.toString(fromHours);
+            else {
+                int fromHours = extras.getInt("fromHours");
+                int fromMinute = extras.getInt("fromMinute");
+                fromHourString = Integer.toString(fromHours);
+                fromMinuteString = Integer.toString(fromMinute);
+                if (fromMinute < 10) {
+                    fromMinuteString = "0" + Integer.toString(fromMinute);
+                }
+                if (fromHours < 10) {
+                    fromHourString = "0" + Integer.toString(fromHours);
+                }
+                fromSpecific = fromHourString + ":" + fromMinuteString;
             }
-
-            String fromSpecific = fromHourString + ":" + fromMinuteString;
-
 
 
             ref.child(id).child("from").setValue(fromTime);

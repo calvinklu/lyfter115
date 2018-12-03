@@ -41,6 +41,8 @@ public class AddTimeActivity extends AppCompatActivity {
     int fromHours, fromMinute, toHour, toMinute;
     String user_email = u.getEmail();
     String etMuscle = "";
+    String from_specific;
+    String old_time;
     boolean edit = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,8 @@ public class AddTimeActivity extends AppCompatActivity {
             etMuscle = backed.getString("etMuscle");
             edit = backed.getBoolean("edit");
             editted_id = backed.getString("id");
+            from_specific = backed.getString("fromSpecific");
+            old_time = backed.getString("old_time");
             int from = backed.getInt("fromHours");
             int from_min = backed.getInt("fromMinute");
             int to = backed.getInt("toHour");
@@ -232,7 +236,7 @@ public class AddTimeActivity extends AppCompatActivity {
                             extras.putInt("toHour", toHour);
                             extras.putInt("toMinute", toMinute);
                             extras.putBoolean("edit", edit);
-
+                            extras.putString("old_time", old_time );
 
                             i.putExtras(extras);
                             startActivity(i);
@@ -262,6 +266,9 @@ public class AddTimeActivity extends AppCompatActivity {
                 extras.putInt("toHour", toHour);
                 extras.putInt("toMinute", toMinute);
                 extras.putBoolean("edit", true);
+                extras.putString("fromSpecific",from_specific );
+                extras.putString("old_time", old_time );
+
 
                 //check if its a valid time
                 int edit_from_hour = Integer.parseInt(fromTime.replaceAll("[^\\d.]", ""));
