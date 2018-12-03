@@ -48,19 +48,45 @@ public class BackgroundService extends Service{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
         Toast.makeText(this, "Alarm service started...", Toast.LENGTH_LONG).show();
+
         ref = FirebaseDatabase.getInstance().getReference("schedule");
         auth = FirebaseAuth.getInstance();
         u = auth.getCurrentUser();
-        Query my_query = FirebaseDatabase.getInstance().getReference("schedule")
-                .orderByChild("email")
-                .equalTo(u.getEmail());
-        my_query.addListenerForSingleValueEvent(my_listener);
+
+        Handler mHandler = new android.os.Handler();
+        ping(mHandler);
         return START_STICKY;
     }
+
+
     @Override
     public void onDestroy(){
         Toast.makeText(this, "Alarm service stopped...", Toast.LENGTH_LONG).show();
     }
+
+
+    private void ping(Handler mHandler) {
+        try {
+            Query my_query = FirebaseDatabase.getInstance().getReference("schedule")
+                    .orderByChild("email")
+                    .equalTo(u.getEmail());
+
+            my_query.addListenerForSingleValueEvent(my_listener);
+
+        } catch (Exception e) {
+            Log.e("Error", "In onStartCommand");
+            e.printStackTrace();
+        }
+        scheduleNext(mHandler);
+    }
+
+    private void scheduleNext(final Handler mHandler) {
+        mHandler.postDelayed(new Runnable() {
+            public void run() { ping(mHandler); }
+        }, 10000);
+    }
+
+
     @Override
     public IBinder onBind(Intent intent){ return null; }
     ValueEventListener my_listener = new ValueEventListener() {
@@ -68,36 +94,50 @@ public class BackgroundService extends Service{
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             dayArray.clear();
             fromArray.clear();
+
             for (DataSnapshot scheduleSnapshot : dataSnapshot.getChildren()) {
                 Schedule schedule = scheduleSnapshot.getValue(Schedule.class);
+
                 String day = schedule.getDay();
                 String from = schedule.getFromSpecific();
+
                 dayArray.add(day);
                 fromArray.add(from);
             }
             workoutTimeCheck(dayArray, fromArray, fromHoursArray);
         }
+
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
         }
     };
+
+
     //----------------------------------------
     public void workoutTimeCheck(List<String> dayArray, List<String> fromArray, List<String> fromHoursArray){
+        Toast.makeText(this, "Been a minute", Toast.LENGTH_LONG).show();
+
         String [] workoutDates = new String[dayArray.size()];
+
         for(int i = 0; i < dayArray.size(); i++){
             workoutDates[i] = dayArray.get(i) + "-" + fromArray.get(i);
         }
+
         SimpleDateFormat sdf =  new SimpleDateFormat("EEEE-HH:mm");
         String currentDate = sdf.format(new Date());
+
         //create workoutDates
         //String[] workoutDates = {"Monday-13:00", "Wednesday-14:30", "Friday-13:45"};
         //Convert workoutDates into alarmDates
+
         String[] alarmDates = new String[workoutDates.length];
         timeConv(workoutDates, alarmDates);
+
         for(int i = 0; i < alarmDates.length; i++){
             if(currentDate.equals(alarmDates[i])){
                 String[] dayTime;
                 dayTime = alarmDates[i].split("-");
+
                 //Convert to AM/PM time
                 SimpleDateFormat twelveHourTime = new SimpleDateFormat("hh:mm a");
                 try {
@@ -105,16 +145,20 @@ public class BackgroundService extends Service{
                     Date convTwelve = twelveHourTime.parse(convertTime);
                     String alarmTime = twelveHourTime.format(convTwelve);
                     sendNotification(alarmTime);
-                }catch(Exception e){
+                } catch(Exception e){
                     e.printStackTrace();
                 }
             }
         }
     }
+
+
     public static void timeConv(String[] workoutDates, String[] alarmDates){
+
         for(int i = 0; i < workoutDates.length; i++){
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat sdf =  new SimpleDateFormat("EEEE-HH:mm");
+
             try{
                 Date date = sdf.parse(workoutDates[i]);
                 cal.setTime(date);
@@ -123,6 +167,7 @@ public class BackgroundService extends Service{
                 System.out.println("Workout date not accepted.");
                 System.exit(0);
             }
+
             cal.add(Calendar.MINUTE, -30);
             Date halfHourBack = cal.getTime();
             String alarmDate = sdf.format(halfHourBack);

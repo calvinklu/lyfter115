@@ -172,8 +172,9 @@ public class MySchedule extends AppCompatActivity{
                 .equalTo(u.getEmail());
 
         my_query.addListenerForSingleValueEvent(my_clear_listener);
-        ListViewSchedule = (ListView) findViewById(R.id.ListViewSchedule);
         myScheduleList = new ArrayList<>();
+        Intent j = new Intent(MySchedule.this, Sidebar.class);
+        startActivity(j);
     }
 
 

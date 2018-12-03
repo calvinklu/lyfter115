@@ -136,7 +136,7 @@ public class AddTimeActivity extends AppCompatActivity {
 
             // toHour must be greater than fromHour
             // reserved range of time must be at least an hour
-            if(fromHours < toHour && (toHour - fromHours >= 1) && !edit){
+            if(fromHours < toHour && (toHour - fromHours >= 1) && !edit ){
 
                 ref.orderByChild("email").equalTo(user_email).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -281,11 +281,96 @@ public class AddTimeActivity extends AppCompatActivity {
                 }
 
                 if(edit_from_hour <= edit_to_hour && (edit_to_hour - edit_from_hour >= 100)){
+
+                    ref.orderByChild("email").equalTo(user_email).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String workout_day;
+                            String new_workout_start = fromTime.substring(fromTime.length() - 2);  //if the workout starts in the AM's
+                            String new_workout_finish = toTime.substring(toTime.length() - 2);
+                            String from;
+                            String to;
+                            int new_ftime = Integer.valueOf(fromTime.replaceAll("[^\\d.]", ""));
+                            int new_ttime = Integer.valueOf(toTime.replaceAll("[^\\d.]", ""));
+
+                            boolean before_ok = false;
+                            boolean after_ok = false;
+                            boolean conflict = false;
+
+                            //checks to see if the times for the start and finish times are AM or PM
+                            // if it is PM add 12 to the hours to make it military time
+                            if (fromTime.substring(fromTime.length() - 2).equals("PM")) {
+                                new_ftime = add_twelve(new_ftime);
+                            }
+                            if (toTime.substring(toTime.length() - 2).equals("PM")) {
+                                new_ttime = add_twelve(new_ttime);
+                            }
+
+                            for (DataSnapshot datas : dataSnapshot.getChildren()) {
+                                workout_day = datas.child("day").getValue().toString();
+                                if (workout_day.equals(etDay)) { //workout times from the database
+                                    String fr_time = datas.child("from").getValue().toString();
+                                    String to_time = datas.child("to").getValue().toString();
+                                    from = datas.child("from").getValue().toString();
+                                    to = datas.child("to").getValue().toString();
+
+                                    String old_workout_start = from.substring(from.length() - 2);
+                                    String old_workout_finish = to.substring(to.length() - 2);
+
+
+                                    fr_time = fr_time.replaceAll("[^\\d.]", "");
+                                    to_time = to_time.replaceAll("[^\\d.]", "");
+                                    int old_ftime = Integer.valueOf(fr_time);
+                                    int old_ttime = Integer.valueOf(to_time);
+
+                                    //checks if the iterated workout is AM or PM
+                                    // if PM add 12 to it
+                                    if (from.substring(from.length() - 2).equals("PM")) {
+                                        old_ftime = add_twelve(old_ftime);
+                                    }
+                                    if (to.substring(to.length() - 2).equals("PM")) {
+                                        old_ttime = add_twelve(old_ttime);
+                                    }
+                                    //checks for the case if the workout times is also AM or PM and same the start and finish time
+                                    if (old_workout_start.equals(new_workout_start) && old_workout_finish.equals(new_workout_finish)
+                                            && (new_ftime == old_ftime) && (new_ttime == old_ttime)) {
+                                        conflict = true;
+                                        break;
+                                    } else {
+                                        //check to see if the new workout can be before or after the iterated workout
+                                        if ((new_ftime <= old_ftime && new_ttime <= old_ftime)) {
+                                            before_ok = true;
+                                        } else {
+                                            before_ok = false;
+                                        }
+                                        //if the new workout's start time is before the old workouts end time
+                                        if (new_ftime >= old_ttime) { //checks to see if can start a workout after another workout
+                                            after_ok = true;
+                                        } else {
+                                            after_ok = false;
+                                        }
+                                        //if you cannot put in before or after
+                                        if (!(before_ok || after_ok)) {
+                                            conflict = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                     i.putExtras(extras);
                     startActivity(i);
                 }
                 else {
-                    message("You have not filled out a correct time slot");
+                    message("That is not a possible schedule");
                 }
             }
             else
