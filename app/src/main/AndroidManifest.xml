@@ -24,8 +24,7 @@
 
         <activity
             android:name=".MySchedule"
-            android:label="@string/edit_schedule"
-            android:launchMode="singleTop"></activity>
+            android:label="@string/edit_schedule"></activity>
 
         <activity
             android:name=".AddTimeActivity"
@@ -38,7 +37,8 @@
         <activity
             android:name=".Sidebar"
             android:label="@string/title_activity_sidebar"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"/>
 
         <activity
             android:name=".LoginActivity"

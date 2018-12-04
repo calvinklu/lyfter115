@@ -42,18 +42,18 @@ public class BackgroundService extends Service{
     DatabaseReference ref;
     List<String> dayArray = new ArrayList<String>();
     List<String> fromArray = new ArrayList<String>();
-    List<String> fromHoursArray = new ArrayList<String>();
+
+
     @Override
     public void onCreate(){
         super.onCreate();
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        Toast.makeText(this, "Alarm service started...", Toast.LENGTH_LONG).show();
-
         ref = FirebaseDatabase.getInstance().getReference("schedule");
         auth = FirebaseAuth.getInstance();
         u = auth.getCurrentUser();
+
 
         Handler mHandler = new android.os.Handler();
         ping(mHandler);
@@ -63,7 +63,6 @@ public class BackgroundService extends Service{
 
     @Override
     public void onDestroy(){
-        Toast.makeText(this, "Alarm service stopped...", Toast.LENGTH_LONG).show();
     }
 
 
@@ -85,7 +84,7 @@ public class BackgroundService extends Service{
     private void scheduleNext(final Handler mHandler) {
         mHandler.postDelayed(new Runnable() {
             public void run() { ping(mHandler); }
-        }, 10000);
+        }, 60000);
     }
 
 
@@ -102,11 +101,12 @@ public class BackgroundService extends Service{
 
                 String day = schedule.getDay();
                 String from = schedule.getFromSpecific();
+                String fromStr = schedule.getFrom();
 
                 dayArray.add(day);
                 fromArray.add(from);
             }
-            workoutTimeCheck(dayArray, fromArray, fromHoursArray);
+            workoutTimeCheck(dayArray, fromArray);
         }
 
         @Override
@@ -116,8 +116,7 @@ public class BackgroundService extends Service{
 
 
     //----------------------------------------
-    public void workoutTimeCheck(List<String> dayArray, List<String> fromArray, List<String> fromHoursArray){
-        Toast.makeText(this, "Been a minute", Toast.LENGTH_LONG).show();
+    public void workoutTimeCheck(List<String> dayArray, List<String> fromArray){
 
         String [] workoutDates = new String[dayArray.size()];
 
@@ -134,33 +133,14 @@ public class BackgroundService extends Service{
 
         HashMap<String, String> alarmDatesDict = new HashMap<String, String>();
 
-        //String[] alarmDates = new String[workoutDates.length];
         timeConv(workoutDates, alarmDatesDict);
 
-        //for(int i = 0; i <= alarmDates.length; i++){
 
-            // Fix here
-            if(currentDate.equals(alarmDatesDict.get(currentDate))){
-                String[] dayTime;
-                dayTime = alarmDatesDict.get(currentDate).split("-");
-
-                //Convert to AM/PM time
-                SimpleDateFormat twelveHourTime = new SimpleDateFormat("hh:mm a");
-
-                sendNotification(dayTime[1]);
-
-//                try {
-//                    String convertTime = dayTime[1];
-//                    Date convTwelve = twelveHourTime.parse(convertTime);
-//                    String alarmTime = twelveHourTime.format(convTwelve);
-//                    sendNotification(alarmTime);
-//                }
-//
-//                catch(Exception e){
-//                    e.printStackTrace();
-//                }
-            }
+        // Fix here
+        if(currentDate.equals(alarmDatesDict.get(currentDate))){
+            sendNotification();
         }
+    }
 
 
     public static void timeConv(String[] workoutDates, HashMap<String, String> alarmDatesDict){
@@ -186,14 +166,14 @@ public class BackgroundService extends Service{
         }
     }
     //----------------------------------------
-    private void sendNotification(String message) {
+    private void sendNotification() {
         Intent notifDest = new Intent(this, MySchedule.class);
         PendingIntent pendingNotifDest = PendingIntent.getActivity
                 (this, 1, notifDest, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder notif = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.flex_logo)
                 .setContentTitle("Time for your workout!")
-                .setContentText("Workout today in 30 minutes at " + message)
+                .setContentText("Workout today in 30 minutes.")
                 .setPriority(Notification.PRIORITY_MAX)
                 .setContentIntent(pendingNotifDest)
                 .setAutoCancel(true);

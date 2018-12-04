@@ -215,11 +215,10 @@ public class AddTimeActivity extends AppCompatActivity {
                         }
 
 
-
                         if (conflict) {
                             message("Your new workout overlaps with one of the current workouts " + from + " to " + to);
-                            message("Please choose another schedule.");
                         }
+
                         else{   //if the workout time is not overlapping any previous ones then add it the new workout to firebase
                             String id = reference.push().getKey();
 
